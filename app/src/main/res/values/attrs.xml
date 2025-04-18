@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SeekBarView">
+        <attr name="max" format="integer" />
+        <attr name="progress" format="integer" />
+        <attr name="trackColor" format="color" />
+        <attr name="progressColor" format="color" />
+        <attr name="thumbColor" format="color" />
+        <attr name="trackHeight" format="dimension" />
+        <attr name="thumbRadius" format="dimension" />
+    </declare-styleable>
+</resources>
