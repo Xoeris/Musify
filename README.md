@@ -7,3 +7,6 @@ Musify's key features include:
 - Special Audio Effects: Enhance your listening experience with advanced audio effects.
 
 Whether you're a casual listener or an audiophile, Musify adapts to your musical needs with style and performance.
+
+App screenshot:
+![1000010063](https://github.com/user-attachments/assets/bbea025e-7cc4-4c82-94a7-075aa0d73183)
