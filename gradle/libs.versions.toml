@@ -8,7 +8,7 @@ material = "1.12.0"
 constraintlayoutCore = "1.1.1"
 media = "1.7.0"
 mediaStyle = "1.7.0"
-mediaVersion = "1.6.0"
+mediaVersion = "1.7.0"
 mediationTestSuite = "3.0.0"
 
 [libraries]
