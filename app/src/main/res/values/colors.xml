@@ -9,10 +9,13 @@
     <color name="white">#ffffffff</color>
     <color name="black">#ff000000</color>
     <color name="blue">#2196f3</color>
-    <color name="gray">#626262</color>
+    <color name="grey">#626262</color>
     <color name="background">@color/white</color>
     <color name="background_25">#40ffffff</color>
-    <color name="background_contrast">@color/gray</color>
-    <color name="background_invert">@color/black</color>
+    <color name="background_contrast">@color/grey</color>
+    <color name="text">#FF000000</color>
+    <color name="text_secondary">#FF212121</color>
+    <color name="bg_card">#E2E2E2</color>
+    <color name="bg_card_inside">#FFEBEBEB</color>
     <color name="ripple">#80595959</color>
 </resources>

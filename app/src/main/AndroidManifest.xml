@@ -29,8 +29,12 @@
             android:name=".app.activity.HomeActivity"
             android:exported="true"
             android:launchMode="singleTask"/>
+        <activity
+            android:name=".app.activity.DisplaySettingsActivity"
+            android:exported="true"
+            android:launchMode="singleTask"/>
         <receiver
-            android:name=".app.receiver.NotificationReceiver"
+            android:name="com.xoeris.android.xesc.system.core.module.media.ui.receiver.NotificationReceiver"
             android:enabled="true"
             android:exported="false">
             <intent-filter>
@@ -40,7 +44,7 @@
             </intent-filter>
         </receiver>
         <service
-            android:name=".app.service.MusicService"
+            android:name="com.xoeris.android.xesc.system.core.module.media.ux.audio.service.SoundFusionService"
             android:enabled="true"
             android:exported="false"/>
 

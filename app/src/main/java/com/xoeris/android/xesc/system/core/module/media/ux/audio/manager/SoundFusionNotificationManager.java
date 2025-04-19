@@ -1,4 +1,4 @@
-package com.xoeris.android.musify.app.classes;
+package com.xoeris.android.xesc.system.core.module.media.ux.audio.manager;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -18,11 +18,11 @@ import androidx.media.app.NotificationCompat.MediaStyle;
 
 import com.xoeris.android.musify.R;
 import com.xoeris.android.musify.app.activity.HomeActivity;
-import com.xoeris.android.musify.app.receiver.NotificationReceiver;
+import com.xoeris.android.xesc.system.core.module.media.ui.receiver.NotificationReceiver;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SongByte;
 
 @SuppressWarnings("all")
-public class MusicNotificationManager {
+public class SoundFusionNotificationManager {
     private static final String CHANNEL_ID = "music_player_channel";
     private static final int NOTIFICATION_ID = 1;
     private NotificationActionListener actionListener;
@@ -39,7 +39,7 @@ public class MusicNotificationManager {
         void onPreviousClicked();
     }
 
-    public MusicNotificationManager(Context context) {
+    public SoundFusionNotificationManager(Context context) {
         this.context = context;
         this.notificationManager = (NotificationManager) context.getSystemService("notification");
         createNotificationChannel();

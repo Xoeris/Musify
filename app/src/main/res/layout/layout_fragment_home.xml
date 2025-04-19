@@ -15,7 +15,7 @@
         <TextView
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="@color/background_invert"
+            android:textColor="@color/text"
             android:id="@+id/header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -28,25 +28,26 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp">
-            <ImageView
-                android:layout_gravity="center_vertical"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_search"
-                android:layout_marginEnd="8dp"
-                app:tint="@color/background_invert"/>
+
             <EditText
-                android:textColor="@color/background_invert"
-                android:textColorHint="@color/background_invert"
                 android:id="@+id/searchEditText"
-                android:background="@color/transparent"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Search music..."
-                android:singleLine="true"
+                android:layout_height="48dp"
+                android:hint="@string/search_settings"
+                android:drawableStart="@drawable/ic_search_settings"
+                android:drawableTint="@color/text"
+                android:drawablePadding="16dp"
+                android:background="@drawable/bg_search_bar"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:layout_marginBottom="16dp"
                 android:inputType="text"
-                android:imeOptions="actionSearch"/>
+                android:imeOptions="actionSearch"
+                android:textColor="@color/text"
+                android:textColorHint="@color/text_secondary" />
+
         </LinearLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/searchListView"
             android:paddingBottom="8dp"
@@ -54,5 +55,6 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>
+
     </LinearLayout>
 </LinearLayout>

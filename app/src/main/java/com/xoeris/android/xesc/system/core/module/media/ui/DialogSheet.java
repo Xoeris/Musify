@@ -1,4 +1,4 @@
-package com.xoeris.android.musify.app.module.media.view;
+package com.xoeris.android.xesc.system.core.module.media.ui;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -20,7 +20,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.xoeris.android.musify.R;
 import com.xoeris.android.musify.app.activity.HomeActivity;
-import com.xoeris.android.xesc.system.core.module.media.ui.VortexSlider;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SongByte;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SoundFusion;
 

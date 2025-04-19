@@ -22,10 +22,10 @@
                 android:layout_width="24dp"
                 android:layout_height="24dp"
                 android:src="@drawable/ic_music_note"
-                app:tint="@color/background_invert"/>
+                app:tint="@color/text"/>
             <TextView
                 android:textSize="18sp"
-                android:textColor="@color/background_invert"
+                android:textColor="@color/text"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Now Playing"
@@ -45,7 +45,7 @@
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_album"
                 android:scaleType="fitCenter"
-                app:tint="@color/gray"/>
+                app:tint="@color/grey"/>
         </LinearLayout>
         <LinearLayout
             android:gravity="bottom"

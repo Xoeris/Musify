@@ -1,4 +1,4 @@
-package com.xoeris.android.musify.app.receiver;
+package com.xoeris.android.xesc.system.core.module.media.ui.receiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

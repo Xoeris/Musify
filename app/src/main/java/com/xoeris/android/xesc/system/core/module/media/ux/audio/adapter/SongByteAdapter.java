@@ -1,4 +1,4 @@
-package com.xoeris.android.xesc.system.core.module.media.ux.audio;
+package com.xoeris.android.xesc.system.core.module.media.ux.audio.adapter;
 
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -11,6 +11,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import com.xoeris.android.musify.R;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.SongByte;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class SongByteAdapter extends RecyclerView.Adapter<SongByteAdapter.ViewHo
 
     @Override // androidx.recyclerview.widget.RecyclerView.Adapter
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_music, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_music, parent, false);
         return new ViewHolder(view);
     }
 

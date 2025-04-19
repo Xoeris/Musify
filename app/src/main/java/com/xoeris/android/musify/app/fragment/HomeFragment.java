@@ -19,7 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.xoeris.android.musify.R;
 import com.xoeris.android.musify.app.activity.HomeActivity;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SongByte;
-import com.xoeris.android.xesc.system.core.module.media.ux.audio.SongByteAdapter;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.adapter.SongByteAdapter;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SoundFusion;
 
 import java.io.IOException;

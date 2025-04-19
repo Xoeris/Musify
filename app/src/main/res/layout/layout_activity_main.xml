@@ -5,7 +5,7 @@
     android:background="@color/background"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <com.xoeris.android.musify.app.module.media.view.UltraVideo
+    <com.xoeris.android.xesc.system.core.module.media.ui.UltraVideo
         android:id="@+id/videoView1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

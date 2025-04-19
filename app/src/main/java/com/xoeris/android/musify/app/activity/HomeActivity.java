@@ -26,11 +26,11 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.xoeris.android.musify.R;
-import com.xoeris.android.musify.app.classes.MusicNotificationManager;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.manager.SoundFusionNotificationManager;
 import com.xoeris.android.musify.app.fragment.HomeFragment;
 import com.xoeris.android.musify.app.fragment.SettingsFragment;
-import com.xoeris.android.musify.app.module.media.view.DialogSheet;
-import com.xoeris.android.musify.app.service.MusicService;
+import com.xoeris.android.xesc.system.core.module.media.ui.DialogSheet;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.service.SoundFusionService;
 import com.xoeris.android.xesc.system.core.module.media.ui.VortexSlider;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SongByte;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SoundFusion;
@@ -60,7 +60,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
     public ImageView homeIcon;
     private boolean isPlaying;
     public ImageView libraryIcon;
-    private MusicNotificationManager notificationManager;
+    private SoundFusionNotificationManager notificationManager;
     public ImageView playPauseButton;
     private VortexSlider seekBar;
     private Handler seekBarHandler;
@@ -93,7 +93,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         setContentView(R.layout.layout_activity_home);
         this.soundFusion = SoundFusion.getInstance(this);
         this.soundFusion.setListener(this);
-        this.notificationManager = new MusicNotificationManager(this);
+        this.notificationManager = new SoundFusionNotificationManager(this);
         setupSeekBarUpdater();
         this.songTitleTextView = (TextView) findViewById(R.id.song_title);
         this.songArtistTextView = (TextView) findViewById(R.id.song_artist);
@@ -217,13 +217,13 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         });
         this.soundFusion = SoundFusion.getInstance(this);
         this.soundFusion.setListener(this);
-        this.notificationManager = new MusicNotificationManager(this);
+        this.notificationManager = new SoundFusionNotificationManager(this);
         this.notificationManager.setActionListener(new AnonymousClass11());
         updateMusicData();
         updateAlbumArtwork();
         updateRepeatButton(repeatMode);
         checkAndRequestPermissions();
-        startService(new Intent(this, (Class<?>) MusicService.class));
+        startService(new Intent(this, (Class<?>) SoundFusionService.class));
         setDefaultAlbumArt();
     }
 
@@ -269,7 +269,7 @@ boolean m206lambda$onCreate$0$comxoerisappmusifyactivitiesHomeActivity(View v, M
     }
 
     /* renamed from: com.xoeris.app.musify.activities.HomeActivity$11, reason: invalid class name */
-    class AnonymousClass11 implements MusicNotificationManager.NotificationActionListener {
+    class AnonymousClass11 implements SoundFusionNotificationManager.NotificationActionListener {
         AnonymousClass11() {
         }
 
@@ -554,7 +554,7 @@ boolean m206lambda$onCreate$0$comxoerisappmusifyactivitiesHomeActivity(View v, M
         editor.putInt(KEY_REPEAT_MODE, this.soundFusion.getRepeatMode());
         editor.apply();
         this.notificationManager.cancelNotification();
-        stopService(new Intent(this, (Class<?>) MusicService.class));
+        stopService(new Intent(this, (Class<?>) SoundFusionService.class));
     }
 
     private void setupSeekBarUpdater() {
@@ -639,7 +639,7 @@ boolean m206lambda$onCreate$0$comxoerisappmusifyactivitiesHomeActivity(View v, M
             if (this.notificationManager != null) {
                 this.notificationManager.cancelNotification();
             }
-            stopService(new Intent(this, (Class<?>) MusicService.class));
+            stopService(new Intent(this, (Class<?>) SoundFusionService.class));
         }
     }
 
@@ -746,6 +746,6 @@ boolean m206lambda$onCreate$0$comxoerisappmusifyactivitiesHomeActivity(View v, M
     /* JADX INFO: Access modifiers changed from: private */
     public void resetIconAndTint(ImageView icon, int iconRes) {
         icon.setImageResource(iconRes);
-        icon.setColorFilter(getResources().getColor(R.color.background_invert));
+        icon.setColorFilter(getResources().getColor(R.color.text));
     }
 }

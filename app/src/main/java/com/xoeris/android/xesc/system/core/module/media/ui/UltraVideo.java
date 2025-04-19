@@ -1,4 +1,4 @@
-package com.xoeris.android.musify.app.module.media.view;
+package com.xoeris.android.xesc.system.core.module.media.ui;
 
 import android.content.Context;
 import android.util.AttributeSet;

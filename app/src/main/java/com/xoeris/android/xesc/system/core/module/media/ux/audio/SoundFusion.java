@@ -13,8 +13,8 @@ import android.provider.MediaStore;
 import android.util.Log;
 import androidx.constraintlayout.core.motion.utils.TypedValues;
 import com.xoeris.android.musify.app.activity.HomeActivity;
-import com.xoeris.android.musify.app.classes.MusicNotificationManager;
-import com.xoeris.android.musify.app.module.media.view.DialogSheet;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.manager.SoundFusionNotificationManager;
+import com.xoeris.android.xesc.system.core.module.media.ui.DialogSheet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +36,7 @@ public class SoundFusion {
     private HomeActivity homeActivity;
     private boolean isShuffleEnabled;
     private OnMusicPlayerListener listener;
-    private MusicNotificationManager notificationManager;
+    private SoundFusionNotificationManager notificationManager;
     private int repeatMode;
     private boolean isPlaying = false;
     private List<SongByte> playlist = new ArrayList();
@@ -373,7 +373,7 @@ public class SoundFusion {
         this.repeatMode = 0;
         this.fadeDuration = 0;
         this.context = context.getApplicationContext();
-        this.notificationManager = new MusicNotificationManager(context);
+        this.notificationManager = new SoundFusionNotificationManager(context);
         setupMediaPlayer();
         SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
         this.fadeDuration = prefs.getInt(KEY_FADE_DURATION, 2);

@@ -8,7 +8,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import com.xoeris.android.musify.R;
-import com.xoeris.android.musify.app.module.media.view.UltraVideo;
+import com.xoeris.android.xesc.system.core.module.media.ui.UltraVideo;
 
 @SuppressWarnings("all")
 public class MainActivity extends AppCompatActivity {
