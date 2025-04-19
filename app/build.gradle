@@ -14,7 +14,7 @@ android {
         versionName '1.0.1'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        versionNameSuffix 'alpha-pre-release'
+        versionNameSuffix 'alpha'
         signingConfig signingConfigs.debug
         multiDexEnabled true
     }
