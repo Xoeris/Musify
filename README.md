@@ -1,12 +1,12 @@
 ## About Musify
-Musify is a powerful and advanced music player app designed for true music enthusiasts. It offers seamless playback of music files directly from your device storage, delivering a high-quality audio experience. Built with a minimalist Material Design aesthetic, Musify provides an intuitive and user-friendly interface that keeps the focus on your music.
+Musify is a powerful and advanced music player multi-platform app designed for true music enthusiasts. It offers seamless playback of music files directly from your device storage, delivering a high-quality audio experience. Built with a minimalist Material Design aesthetic, Musify provides an intuitive and user-friendly interface that keeps the focus on your music.
 Musify's key features include:
 
 - Playlists: Create and manage your favorite tracks effortlessly.
 - Equalizer: Fine-tune your sound with customizable audio settings.
 - Special Audio Effects: Enhance your listening experience with advanced audio effects.
 
-Whether you're a casual listener or an audiophile, Musify adapts to your musical needs with style and performance.
+Whether you're a casual listener or an audiophile, Musify adapts to your musical needs with style and performance. Musify currently available for Android. Coming soon for IOS and Windows.
 
 ---
 
