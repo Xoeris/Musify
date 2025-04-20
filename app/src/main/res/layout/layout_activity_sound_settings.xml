@@ -36,7 +36,8 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/display"
+                android:text="@string/sound"
+                android:textStyle="bold"
                 android:layout_weight="1"
                 android:layout_gravity="center_vertical"
                 android:paddingEnd="16dp"
@@ -64,7 +65,7 @@
                     <TextView
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="@string/theme"
+                        android:text="@string/volume"
                         android:layout_gravity="center_vertical"
                         android:layout_weight="1"
                         android:layout_margin="16dp"
@@ -72,20 +73,21 @@
                         android:textSize="20sp"
                         android:textColor="@color/text"/>
 
+                    <Switch
+                        android:id="@+id/volumeSwitch"
+                        android:layout_width="50dp"
+                        android:layout_height="match_parent"
+                        tools:ignore="UseSwitchCompatOrMaterialXml" />
 
                 </LinearLayout>
 
-                <!-- Card 1 -->
-                <Spinner
-                    android:id="@+id/themeSpinner"
+                <com.xoeris.android.xesc.system.core.module.media.ui.VortexSlider
+                    android:id="@+id/vortexSlider"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/bg_card"
-                    android:spinnerMode="dropdown"
-                    android:padding="16dp"
-                    android:dropDownVerticalOffset="8dp"
-                    android:dropDownHorizontalOffset="8dp"
-                    android:popupBackground="@drawable/bg_card" />
+                    android:layout_height="25dp"
+                    android:layout_margin="16dp"
+                    app:thumbColor="@color/blue"
+                    app:progressColor="@color/text_secondary"/>
 
             </LinearLayout>
 

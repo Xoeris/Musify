@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layout_card_item_theme"
     android:orientation="horizontal"
     android:padding="16dp"
     android:layout_width="match_parent"
@@ -30,7 +31,7 @@
             android:id="@+id/title"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
-            android:text="Display"
+            android:text="@string/display"
             android:textColor="@color/text"
             android:textSize="14sp"
             android:textStyle="bold"

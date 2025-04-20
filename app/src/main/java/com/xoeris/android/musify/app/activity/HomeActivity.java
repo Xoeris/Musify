@@ -89,10 +89,17 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
         boolean shuffleState = prefs.getBoolean(KEY_SHUFFLE_STATE, false);
         int repeatMode = prefs.getInt(KEY_REPEAT_MODE, 0);
+        // Load sound preferences
+        SharedPreferences soundPrefs = getSharedPreferences("SoundSettingsPrefs", MODE_PRIVATE);
+        boolean volumeEnabled = soundPrefs.getBoolean("volume_enabled", true);
+        float userVolume = soundPrefs.getFloat("user_volume", SoundFusion.getInstance(this).getUserVolume());
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_activity_home);
         this.soundFusion = SoundFusion.getInstance(this);
         this.soundFusion.setListener(this);
+        // Apply volume preferences
+        this.soundFusion.setVolumeEnabled(volumeEnabled);
+        this.soundFusion.setUserVolume(userVolume);
         this.notificationManager = new SoundFusionNotificationManager(this);
         setupSeekBarUpdater();
         this.songTitleTextView = (TextView) findViewById(R.id.song_title);

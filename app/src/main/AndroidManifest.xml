@@ -27,12 +27,13 @@
         </activity>
         <activity
             android:name=".app.activity.HomeActivity"
-            android:exported="true"
-            android:launchMode="singleTask"/>
+            android:exported="true" />
         <activity
             android:name=".app.activity.DisplaySettingsActivity"
-            android:exported="true"
-            android:launchMode="singleTask"/>
+            android:exported="true" />
+        <activity
+            android:name=".app.activity.SoundSettingsActivity"
+            android:exported="true" />
         <receiver
             android:name="com.xoeris.android.xesc.system.core.module.media.ui.receiver.NotificationReceiver"
             android:enabled="true"
