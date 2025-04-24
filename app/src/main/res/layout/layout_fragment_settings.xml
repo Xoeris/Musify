@@ -13,7 +13,6 @@
         android:dividerPadding="8dp">
 
 
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,7 +48,6 @@
 
         <!-- Card 1 -->
         <LinearLayout
-            android:id="@+id/displayCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -57,7 +55,8 @@
             android:background="@drawable/bg_card"
             android:gravity="center_vertical">
 
-            <include layout="@layout/layout_item_theme" />
+            <include layout="@layout/layout_card_item_display" />
+            <include layout="@layout/layout_card_item_sound" />
 
         </LinearLayout>
 

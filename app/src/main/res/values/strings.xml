@@ -12,4 +12,5 @@
     <string name="dark">Dark</string>
     <string name="theme">Theme</string>
     <string name="display">Display</string>
+    <string name="sound">Sound</string>
 </resources>
