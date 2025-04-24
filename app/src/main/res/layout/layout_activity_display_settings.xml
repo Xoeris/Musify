@@ -62,7 +62,7 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/theme"
                         android:layout_gravity="center_vertical"
@@ -80,6 +80,7 @@
                     android:id="@+id/themeSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
                     android:background="@drawable/bg_card"
                     android:spinnerMode="dropdown"
                     android:padding="16dp"

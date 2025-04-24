@@ -12,7 +12,4 @@
     <string name="dark">Dark</string>
     <string name="theme">Theme</string>
     <string name="display">Display</string>
-    <string name="search_music">Search music...</string>
-    <string name="sound">Sound</string>
-    <string name="volume">Volume</string>
 </resources>

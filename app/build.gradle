@@ -11,10 +11,11 @@ android {
         minSdk 24
         targetSdk 35
         versionCode 1
-        versionName '1.0.1'
+        versionName '1.0.2'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        versionNameSuffix 'alpha'
+        versionNameSuffix 'release'
+        versionCode 1
         signingConfig signingConfigs.debug
         multiDexEnabled true
     }
@@ -29,6 +30,15 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
+    buildFeatures {
+        viewBinding true
+    }
+    dependenciesInfo {
+        includeInApk false
+        includeInBundle false
+    }
+    ndkVersion '27.0.12077973'
+    buildToolsVersion '34.0.0'
 }
 
 dependencies {

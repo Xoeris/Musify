@@ -22,11 +22,6 @@ public class MainActivity extends AppCompatActivity {
         int themeMode = preferences.getInt("theme_mode", AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM);
         AppCompatDelegate.setDefaultNightMode(themeMode);
 
-        // Load sound preferences
-        SharedPreferences soundPrefs = getSharedPreferences("SoundSettingsPrefs", MODE_PRIVATE);
-        boolean volumeEnabled = soundPrefs.getBoolean("volume_enabled", true);
-        float userVolume = soundPrefs.getFloat("user_volume", 1.0f);
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_activity_main);
 
@@ -42,11 +37,7 @@ public class MainActivity extends AppCompatActivity {
         // Configure video view
         ultraVideo.getVideoView().setVideoURI(uri);
         ultraVideo.getVideoView().setOnPreparedListener(mediaPlayer -> {
-            if (volumeEnabled) {
-                mediaPlayer.setVolume(userVolume, userVolume);
-            } else {
-                mediaPlayer.setVolume(0, 0);
-            }
+            mediaPlayer.setVolume(0, 0); // Mute the video
             mediaPlayer.setLooping(false);
             ultraVideo.getVideoView().start();
         });

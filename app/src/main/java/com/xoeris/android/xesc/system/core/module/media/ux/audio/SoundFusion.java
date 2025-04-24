@@ -46,8 +46,6 @@ public class SoundFusion {
     private SongByte lastPlayedSongByte = null;
     private List<SongByte> allSongBytes = new ArrayList();
     private Set<Integer> playedSongs = new HashSet();
-    private float userVolume = 1.0f;
-    private boolean volumeEnabled = true;
     private final Runnable progressRunnable = new Runnable() { // from class: com.xoeris.system.core.module.media.ux.audio.SoundFusion.3
         @Override // java.lang.Runnable
         public void run() {
@@ -381,11 +379,7 @@ public class SoundFusion {
         this.fadeDuration = prefs.getInt(KEY_FADE_DURATION, 2);
         this.repeatMode = prefs.getInt("repeat_mode", 0);
         this.isShuffleEnabled = prefs.getBoolean("shuffle_state", false);
-        // Load user volume and enabled state
-        this.userVolume = prefs.getFloat("user_volume", 1.0f);
-        this.volumeEnabled = prefs.getBoolean("volume_enabled", true);
-        setUserVolume(this.userVolume);
-        setVolumeEnabled(this.volumeEnabled);
+        this.fadeDuration = context.getSharedPreferences(PREFS_NAME, 0).getInt(KEY_FADE_DURATION, 2);
     }
 
     private void startProgressUpdate() {
@@ -632,33 +626,5 @@ public class SoundFusion {
     public void setRepeatMode(int mode) {
         this.repeatMode = mode;
         this.context.getSharedPreferences(PREFS_NAME, 0).edit().putInt("repeat_mode", mode).apply();
-    }
-
-    public void setUserVolume(float volume) {
-        this.userVolume = Math.max(0f, Math.min(1f, volume));
-        if (volumeEnabled) {
-            this.mediaPlayer.setVolume(this.userVolume, this.userVolume);
-        } else {
-            this.mediaPlayer.setVolume(0f, 0f);
-        }
-        this.context.getSharedPreferences(PREFS_NAME, 0).edit().putFloat("user_volume", this.userVolume).apply();
-    }
-
-    public float getUserVolume() {
-        return this.context.getSharedPreferences(PREFS_NAME, 0).getFloat("user_volume", this.userVolume);
-    }
-
-    public void setVolumeEnabled(boolean enabled) {
-        this.volumeEnabled = enabled;
-        if (enabled) {
-            this.mediaPlayer.setVolume(this.userVolume, this.userVolume);
-        } else {
-            this.mediaPlayer.setVolume(0f, 0f);
-        }
-        this.context.getSharedPreferences(PREFS_NAME, 0).edit().putBoolean("volume_enabled", enabled).apply();
-    }
-
-    public boolean isVolumeEnabled() {
-        return this.context.getSharedPreferences(PREFS_NAME, 0).getBoolean("volume_enabled", this.volumeEnabled);
     }
 }

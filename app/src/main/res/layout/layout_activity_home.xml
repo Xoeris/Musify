@@ -134,28 +134,27 @@
                 android:layout_height="wrap_content">
                 <Space
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"/>
+
                 <TextView
                     android:id="@+id/song_current_duration"
                     android:text="@string/_00_00"
                     android:layout_marginEnd="50dp"
                     android:textColor="@color/white"
-                    android:padding="16dp"
                     style="@style/DurationText"/>
                 <Space
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="2"/>
                 <TextView
                     android:id="@+id/song_duration"
                     android:text="@string/_00_00"
                     android:textColor="@color/white"
-                    android:padding="16dp"
                     style="@style/DurationText"/>
                 <Space
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"/>
             </LinearLayout>
         </LinearLayout>
