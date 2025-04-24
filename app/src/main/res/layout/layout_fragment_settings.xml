@@ -57,6 +57,7 @@
 
             <include layout="@layout/layout_card_item_display" />
             <include layout="@layout/layout_card_item_sound" />
+            <include layout="@layout/layout_card_item_about" />
 
         </LinearLayout>
 

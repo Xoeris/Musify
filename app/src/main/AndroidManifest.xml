@@ -35,6 +35,9 @@
         <activity
             android:name=".app.activity.SoundSettingsActivity"
             android:exported="true" />
+        <activity
+            android:name=".app.activity.AboutSettingsActivity"
+            android:exported="true" />
         <receiver
             android:name="com.xoeris.android.xesc.system.core.module.media.ui.receiver.NotificationReceiver"
             android:enabled="true"
