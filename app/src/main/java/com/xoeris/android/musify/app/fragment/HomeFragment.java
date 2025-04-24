@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -23,8 +24,11 @@ import com.xoeris.android.xesc.system.core.module.media.ux.audio.adapter.SongByt
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SoundFusion;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @SuppressWarnings("all")
 public class HomeFragment extends Fragment {
@@ -34,6 +38,11 @@ public class HomeFragment extends Fragment {
     private EditText searchEditText;
     private List<SongByte> songByteList;
     private SoundFusion soundFusion;
+    private static List<SongByte> staticSongCache = null;
+    private static boolean isCacheLoaded = false;
+    private static final String SONG_CACHE_KEY = "song_cache";
+    private ExecutorService executorService = Executors.newSingleThreadExecutor();
+    private Handler mainHandler = new Handler(Looper.getMainLooper());
 
     @Override // androidx.fragment.app.Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,34 +51,26 @@ public class HomeFragment extends Fragment {
         this.recyclerView = (RecyclerView) view.findViewById(R.id.searchListView);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         this.soundFusion = SoundFusion.getInstance(requireContext());
-        this.songByteList = new ArrayList();
-        this.filteredList = new ArrayList();
-        this.adapter = new SongByteAdapter(this.filteredList, new SongByteAdapter.OnSongClickListener() { // from class: com.xoeris.app.musify.fragments.HomeFragment$$ExternalSyntheticLambda0
-            @Override // com.xoeris.system.core.module.media.ux.audio.SongByteAdapter.OnSongClickListener
-            public final void onSongClick(SongByte songByte, int i) {
+        this.songByteList = new ArrayList<>();
+        this.filteredList = new ArrayList<>();
+        this.adapter = new SongByteAdapter(this.filteredList, new SongByteAdapter.OnSongClickListener() {
+            @Override
+            public void onSongClick(SongByte songByte, int i) {
                 HomeFragment.this.m217xc25240b1(songByte, i);
             }
         });
         this.recyclerView.setAdapter(this.adapter);
-        this.searchEditText.addTextChangedListener(new TextWatcher() { // from class: com.xoeris.app.musify.fragments.HomeFragment.2
-            @Override // android.text.TextWatcher
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
-
-            @Override // android.text.TextWatcher
+        this.searchEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 HomeFragment.this.filterSongs(s.toString().toLowerCase().trim());
             }
-
-            @Override // android.text.TextWatcher
-            public void afterTextChanged(Editable s) {
-            }
+            @Override
+            public void afterTextChanged(Editable s) {}
         });
-        try {
-            loadSongs();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadSongsAsync();
         return view;
     }
 
@@ -99,32 +100,66 @@ public class HomeFragment extends Fragment {
         }
     }
 
-    private void loadSongs() throws IOException {
-        ContentResolver contentResolver = requireActivity().getContentResolver();
-        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        Cursor cursor = contentResolver.query(uri, null, "is_music!= 0", null, "title ASC");
-        if (cursor != null) {
-            try {
-                if (cursor.getCount() > 0) {
-                    this.songByteList.clear();
-                    this.filteredList.clear();
-                    while (cursor.moveToNext()) {
-                        String data = cursor.getString(cursor.getColumnIndexOrThrow("_data"));
-                        String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
-                        String artist = cursor.getString(cursor.getColumnIndexOrThrow("artist"));
-                        String duration = cursor.getString(cursor.getColumnIndexOrThrow(TypedValues.TransitionType.S_DURATION));
-                        SongByte songByte = new SongByte(title, artist, data, duration, duration);
-                        this.songByteList.add(songByte);
+    private void loadSongsAsync() {
+        final WeakReference<HomeFragment> fragmentRef = new WeakReference<>(this);
+        mainHandler.post(() -> showLoadingIndicator(true));
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<SongByte> loadedSongs = new ArrayList<>();
+                HomeFragment fragment = fragmentRef.get();
+                if (fragment == null || fragment.getActivity() == null) return;
+                ContentResolver contentResolver = fragment.getActivity().getContentResolver();
+                Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                Cursor cursor = null;
+                try {
+                    cursor = contentResolver.query(uri, null, "is_music!= 0", null, "title ASC");
+                    if (cursor != null && cursor.getCount() > 0) {
+                        int batchSize = 30;
+                        int count = 0;
+                        while (cursor.moveToNext()) {
+                            String data = cursor.getString(cursor.getColumnIndexOrThrow("_data"));
+                            String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+                            String artist = cursor.getString(cursor.getColumnIndexOrThrow("artist"));
+                            String duration = cursor.getString(cursor.getColumnIndexOrThrow(TypedValues.TransitionType.S_DURATION));
+                            SongByte songByte = new SongByte(title, artist, data, duration, duration);
+                            loadedSongs.add(songByte);
+                            count++;
+                            if (count % batchSize == 0) {
+                                final List<SongByte> batch = new ArrayList<>(loadedSongs);
+                                mainHandler.post(() -> {
+                                    HomeFragment frag = fragmentRef.get();
+                                    if (frag == null) return;
+                                    frag.songByteList.clear();
+                                    frag.filteredList.clear();
+                                    frag.songByteList.addAll(batch);
+                                    frag.filteredList.addAll(batch);
+                                    staticSongCache = new ArrayList<>(batch);
+                                    isCacheLoaded = true;
+                                    if (frag.adapter != null) frag.adapter.notifyDataSetChanged();
+                                });
+                            }
+                        }
                     }
-                    this.filteredList.addAll(this.songByteList);
-                    this.adapter.notifyDataSetChanged();
+                } catch (Exception e) {
+                    // Log or handle error
+                } finally {
+                    if (cursor != null) cursor.close();
                 }
-            } finally {
+                mainHandler.post(() -> {
+                    HomeFragment frag = fragmentRef.get();
+                    if (frag == null) return;
+                    frag.songByteList.clear();
+                    frag.filteredList.clear();
+                    frag.songByteList.addAll(loadedSongs);
+                    frag.filteredList.addAll(loadedSongs);
+                    staticSongCache = new ArrayList<>(loadedSongs);
+                    isCacheLoaded = true;
+                    if (frag.adapter != null) frag.adapter.notifyDataSetChanged();
+                    showLoadingIndicator(false);
+                });
             }
-        }
-        if (cursor != null) {
-            cursor.close();
-        }
+        });
     }
 
     /* JADX INFO: Access modifiers changed from: private */
@@ -154,10 +189,69 @@ public class HomeFragment extends Fragment {
     @Override // androidx.fragment.app.Fragment
     public void onResume() {
         super.onResume();
-        try {
-            loadSongs();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        refreshSongsInBackground();
+    }
+
+    private void refreshSongsInBackground() {
+        final WeakReference<HomeFragment> fragmentRef = new WeakReference<>(this);
+        executorService.execute(new Runnable() {
+            @Override
+            public void run() {
+                List<SongByte> loadedSongs = new ArrayList<>();
+                HomeFragment fragment = fragmentRef.get();
+                if (fragment == null || fragment.getActivity() == null) return;
+                ContentResolver contentResolver = fragment.getActivity().getContentResolver();
+                Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+                Cursor cursor = null;
+                try {
+                    cursor = contentResolver.query(uri, null, "is_music!= 0", null, "title ASC");
+                    if (cursor != null && cursor.getCount() > 0) {
+                        while (cursor.moveToNext()) {
+                            String data = cursor.getString(cursor.getColumnIndexOrThrow("_data"));
+                            String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
+                            String artist = cursor.getString(cursor.getColumnIndexOrThrow("artist"));
+                            String duration = cursor.getString(cursor.getColumnIndexOrThrow(TypedValues.TransitionType.S_DURATION));
+                            SongByte songByte = new SongByte(title, artist, data, duration, duration);
+                            loadedSongs.add(songByte);
+                        }
+                    }
+                } catch (Exception e) {
+                    // Log or handle error
+                } finally {
+                    if (cursor != null) cursor.close();
+                }
+                mainHandler.post(() -> {
+                    HomeFragment frag = fragmentRef.get();
+                    if (frag == null) return;
+                    boolean changed = false;
+                    if (staticSongCache == null || loadedSongs.size() != staticSongCache.size()) {
+                        changed = true;
+                    } else {
+                        for (int i = 0; i < loadedSongs.size(); i++) {
+                            if (!loadedSongs.get(i).getPath().equals(staticSongCache.get(i).getPath())) {
+                                changed = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (changed) {
+                        frag.songByteList.clear();
+                        frag.filteredList.clear();
+                        frag.songByteList.addAll(loadedSongs);
+                        frag.filteredList.addAll(loadedSongs);
+                        staticSongCache = new ArrayList<>(loadedSongs);
+                        isCacheLoaded = true;
+                        if (frag.adapter != null) frag.adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+    }
+
+    private void showLoadingIndicator(boolean show) {
+        View root = getView();
+        if (root == null) return;
+        View loading = root.findViewById(R.id.loadingIndicator);
+        if (loading != null) loading.setVisibility(show ? View.VISIBLE : View.GONE);
     }
 }
