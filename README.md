@@ -1,10 +1,9 @@
 <div align="center">
   <img src="https://github.com/user-attachments/assets/9b70201a-f4b2-4184-9b1f-f21851e3d249" width="100%" alt="Musify Banner">
 
-#
-# 🎶 **Musify** 🎶
+# **Musify** 
 _A Next-Generation Music Experience_
-#
+
 </div>
 
 ---
