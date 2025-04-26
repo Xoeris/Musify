@@ -85,7 +85,7 @@ Built with **Material Design** principles, Musify features:
 # ⬇️ Download Musify
 
 <div align="center">
-  <a href="https://github.com/Xoeris/Musify/releases/tag/pre-release">
+  <a href="https://github.com/Xoeris/Musify/releases/tag/latest">
     <img src="https://github.com/user-attachments/assets/eeb172e2-539e-49bc-9205-6f39ef03db40" width="250" height="96" alt="Download Musify">
   </a>
 </div>
