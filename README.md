@@ -1,9 +1,9 @@
 <div align="center">
   <img src="https://github.com/user-attachments/assets/9b70201a-f4b2-4184-9b1f-f21851e3d249" width="100%" alt="Musify Banner">
-  
-#  
-# 🎶 **Musify** 🎶  
-_A Next-Generation Music Experience_  
+
+#
+# 🎶 **Musify** 🎶
+_A Next-Generation Music Experience_
 #
 </div>
 
@@ -68,10 +68,10 @@ Built with **Material Design** principles, Musify features:
 
 ---
 
-# ⚡ App Preview
+# ✨ App Preview
 
 <div align="center">
-  
+
 <img src="https://github.com/user-attachments/assets/ca824c19-0c4d-4d5a-a523-12734f47a2f5" width="150" height="84">  
 <br/><br/>
 <img src="https://github.com/user-attachments/assets/b928884c-2bf3-4e15-861f-c22e27abbf68" width="120" height="266">
@@ -93,13 +93,25 @@ Built with **Material Design** principles, Musify features:
 
 ---
 
-#  
+# ⚠️ Warning
+
+> Musify is currently in **pre-release** stage. Some features might still be under development. Expect regular updates and improvements!
+
+---
+
+# © Copyright
+
+**Musify** © 2025 Xoeris. All rights reserved.  
+Unauthorized copying, modification, distribution, or use of this software is prohibited without express permission.
+
+---
+
+#
 <div align="center">
-  
+
 _Experience music the way it was meant to be heard. With **Musify**, you're not just listening — you're feeling every note._  
 **🎶 Dive In. Tune Out. Feel Alive. 🎶**
 
 </div>
 
 ---
-
