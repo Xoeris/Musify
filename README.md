@@ -1,3 +1,9 @@
+<div align="center">
+  <img src="https://github.com/user-attachments/assets/9b70201a-f4b2-4184-9b1f-f21851e3d249" width="100%" alt="Banner">
+
+#
+</div>
+
 ## About Musify
 
 Musify is a feature-rich, next-generation music player designed for music lovers who demand more from their listening experience. Available on Android and soon launching on iOS and Windows, Musify transforms your device into a high-fidelity audio hub that puts your personal music library front and center. Whether you're a casual listener, a passionate audiophile, or somewhere in between, Musify offers a sleek and powerful platform tailored to your musical lifestyle.
