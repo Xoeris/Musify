@@ -108,7 +108,7 @@ Unauthorized copying, modification, distribution, or use of this software is pro
 #
 <div align="center">
 
-_Experience music the way it was meant to be heard. With **Musify**, you're not just listening — you're feeling every note. Dive In. Tune Out. Feel Alive._
+_Experience music the way it was meant to be heard. With **Musify**, you're not just listening... you're feeling every note. Dive In. Tune Out. Feel Alive._
 
 </div>
 
