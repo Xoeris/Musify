@@ -42,7 +42,8 @@
                 android:paddingEnd="16dp"
                 android:gravity="center_horizontal"
                 android:textSize="24sp"
-                android:textColor="@color/text"/>
+                android:textColor="@color/text"
+                tools:ignore="RtlSymmetry" />
 
         </LinearLayout>
 
@@ -62,31 +63,72 @@
                     android:orientation="horizontal">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:text="@string/theme"
                         android:layout_gravity="center_vertical"
-                        android:layout_weight="1"
                         android:layout_margin="16dp"
                         android:gravity="start"
                         android:textSize="20sp"
                         android:textColor="@color/text"/>
 
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_card"
+                        android:layout_margin="16dp">
+
+                        <Spinner
+                            android:id="@+id/themeSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rp_rounded_ripple_drawable"
+                            android:spinnerMode="dropdown"
+                            android:padding="16dp"
+                            android:dropDownVerticalOffset="8dp"
+                            android:dropDownHorizontalOffset="8dp"
+                            android:popupBackground="@drawable/bg_card" />
+                    </LinearLayout>
 
                 </LinearLayout>
 
                 <!-- Card 1 -->
-                <Spinner
-                    android:id="@+id/themeSpinner"
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="16dp"
-                    android:background="@drawable/bg_card"
-                    android:spinnerMode="dropdown"
-                    android:padding="16dp"
-                    android:dropDownVerticalOffset="8dp"
-                    android:dropDownHorizontalOffset="8dp"
-                    android:popupBackground="@drawable/bg_card" />
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/accent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="16dp"
+                        android:gravity="start"
+                        android:textSize="20sp"
+                        android:textColor="@color/text"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_card"
+                        android:layout_margin="16dp">
+
+                        <Spinner
+                            android:id="@+id/accentSpinner"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/rp_rounded_ripple_drawable"
+                            android:spinnerMode="dropdown"
+                            android:padding="16dp"
+                            android:dropDownVerticalOffset="8dp"
+                            android:dropDownHorizontalOffset="8dp"
+                            android:popupBackground="@drawable/bg_card" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
             </LinearLayout>
 

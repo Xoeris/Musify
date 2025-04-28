@@ -6,7 +6,7 @@
     android:padding="16dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/rp_ripple_drawable"
+    android:background="@drawable/rp_rounded_ripple_drawable_top_only"
     android:gravity="center_vertical">
 
     <ImageView

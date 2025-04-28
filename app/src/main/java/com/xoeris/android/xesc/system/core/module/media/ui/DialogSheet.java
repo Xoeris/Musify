@@ -360,6 +360,7 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
                 @Override // java.lang.Runnable
                 public final void run() {
                     DialogSheet.this.m225xc56d1946(isPlaying);
+                    DialogSheet.this.updatePlayPauseButton();
                 }
             });
         }

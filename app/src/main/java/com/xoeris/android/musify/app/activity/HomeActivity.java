@@ -19,13 +19,15 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.xoeris.android.musify.R;
+import com.xoeris.android.musify.app.dialog.PermissionDialog;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.manager.PermissionManager;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.manager.SoundFusionNotificationManager;
 import com.xoeris.android.musify.app.fragment.HomeFragment;
 import com.xoeris.android.musify.app.fragment.SettingsFragment;
@@ -34,8 +36,6 @@ import com.xoeris.android.xesc.system.core.module.media.ux.audio.service.SoundFu
 import com.xoeris.android.xesc.system.core.module.media.ui.VortexSlider;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SongByte;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SoundFusion;
-import java.util.ArrayList;
-import java.util.List;
 
 @SuppressWarnings("all")
 public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPlayerListener {
@@ -84,6 +84,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
     @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, androidx.core.app.ComponentActivity, android.app.Activity
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences preferences = getSharedPreferences("ThemePrefs", 0);
+        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         int themeMode = preferences.getInt("theme_mode", -1);
         AppCompatDelegate.setDefaultNightMode(themeMode);
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
@@ -91,6 +92,21 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         int repeatMode = prefs.getInt(KEY_REPEAT_MODE, 0);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_activity_home);
+
+        // Check and request permissions
+        PermissionManager.checkAndRequestPermissions(this, new PermissionDialog.PermissionDialogListener() {
+            @Override
+            public void onAllPermissionsGranted() {
+                // Permissions granted, continue with your app logic
+            }
+
+            @Override
+            public void onPermissionsDenied() {
+                // Permissions denied, show a toast or handle accordingly
+                Toast.makeText(HomeActivity.this, "Permissions are required to use Musify properly.", Toast.LENGTH_LONG).show();
+            }
+        });
+
         this.soundFusion = SoundFusion.getInstance(this);
         this.soundFusion.setListener(this);
         this.notificationManager = new SoundFusionNotificationManager(this);
@@ -222,9 +238,26 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         updateMusicData();
         updateAlbumArtwork();
         updateRepeatButton(repeatMode);
-        checkAndRequestPermissions();
         startService(new Intent(this, (Class<?>) SoundFusionService.class));
         setDefaultAlbumArt();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // Pass context along with other parameters
+        PermissionManager.onRequestPermissionsResult(this, requestCode, permissions, grantResults, new PermissionDialog.PermissionDialogListener() {
+            @Override
+            public void onAllPermissionsGranted() {
+                // Handle permission granted
+            }
+
+            @Override
+            public void onPermissionsDenied() {
+                // Handle permission denied
+            }
+        });
     }
 
 boolean m206lambda$onCreate$0$comxoerisappmusifyactivitiesHomeActivity(View v, MotionEvent event) {
@@ -648,34 +681,6 @@ boolean m206lambda$onCreate$0$comxoerisappmusifyactivitiesHomeActivity(View v, M
         int minutes = (milliseconds / 60000) % 60;
         int ms = (milliseconds % 1000) / 10;
         return String.format("%02d:%02d.%02d", Integer.valueOf(minutes), Integer.valueOf(seconds), Integer.valueOf(ms));
-    }
-
-    private void checkAndRequestPermissions() {
-        List<String> permissionsNeeded = new ArrayList<>();
-        if (ContextCompat.checkSelfPermission(this, "android.permission.POST_NOTIFICATIONS") != 0) {
-            permissionsNeeded.add("android.permission.POST_NOTIFICATIONS");
-        }
-        if (ContextCompat.checkSelfPermission(this, "android.permission.READ_EXTERNAL_STORAGE") != 0) {
-            permissionsNeeded.add("android.permission.READ_EXTERNAL_STORAGE");
-        }
-        if (ContextCompat.checkSelfPermission(this, "android.permission.READ_MEDIA_AUDIO") != 0) {
-            permissionsNeeded.add("android.permission.READ_MEDIA_AUDIO");
-        }
-        if (!permissionsNeeded.isEmpty()) {
-            ActivityCompat.requestPermissions(this, (String[]) permissionsNeeded.toArray(new String[0]), 100);
-        }
-    }
-
-    @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, android.app.Activity
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 100) {
-            for (int result : grantResults) {
-                if (result != 0) {
-                    return;
-                }
-            }
-        }
     }
 
     /* JADX INFO: Access modifiers changed from: private */

@@ -10,11 +10,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 import com.xoeris.android.musify.R;
 
+@SuppressWarnings("all")
 public class DisplaySettingsActivity extends AppCompatActivity {
     private static final String PREFS_NAME = "ThemePrefs";
     private static final String KEY_THEME_MODE = "theme_mode";
     private Spinner themeSpinner;
+    private Spinner accentSpinner;
     private String[] themeOptions;
+    private String[] accentOptions;
     private int[] themeModes = new int[] {
             AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM,
             AppCompatDelegate.MODE_NIGHT_YES,
@@ -27,6 +30,7 @@ public class DisplaySettingsActivity extends AppCompatActivity {
         setContentView(R.layout.layout_activity_display_settings);
 
         themeSpinner = findViewById(R.id.themeSpinner);
+        accentSpinner = findViewById(R.id.accentSpinner);
         findViewById(R.id.back).setOnClickListener(v -> finish());
 
         themeOptions = new String[] {
@@ -35,9 +39,19 @@ public class DisplaySettingsActivity extends AppCompatActivity {
                 getString(R.string.light)
         };
 
+        accentOptions = new String[] {
+                getString(R.string.material_design),
+                getString(R.string.self_defined),
+                getString(R.string.normal)
+        };
+
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.layout_spinner_item_theme, themeOptions);
         adapter.setDropDownViewResource(R.layout.layout_spinner_item_theme);
         themeSpinner.setAdapter(adapter);
+
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(this, R.layout.layout_spinner_item_accent, accentOptions);
+        adapter2.setDropDownViewResource(R.layout.layout_spinner_item_accent);
+        accentSpinner.setAdapter(adapter2);
 
         int themeMode = getSavedThemeMode();
         int selectedIndex = 0;
