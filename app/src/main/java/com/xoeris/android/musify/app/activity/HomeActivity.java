@@ -678,6 +678,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         dialogConfirmExit.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialogConfirmExit.setView(inflateConfirmExit);
         CardView buttonExitConfirmExit = inflateConfirmExit.findViewById(R.id.button_exit);
+        CardView buttonCancelConfirmExit = inflateConfirmExit.findViewById(R.id.button_cancel);
         CardView buttonRunInBackgroundConfirmExit = inflateConfirmExit.findViewById(R.id.button_run_in_background);
 
         buttonExitConfirmExit.setOnClickListener(v -> {
@@ -699,6 +700,10 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
                 stopService(new Intent(this, (Class<?>) SoundFusionService.class));
             }
             finishAffinity();
+        });
+
+        buttonCancelConfirmExit.setOnClickListener(v -> {
+            dialogConfirmExit.dismiss();
         });
 
         buttonRunInBackgroundConfirmExit.setOnClickListener(v -> {

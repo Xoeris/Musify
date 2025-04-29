@@ -59,6 +59,26 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/button_cancel"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/rp_rounded_ripple_drawable"
+        android:layout_marginBottom="12dp"
+        app:cardBackgroundColor="@color/red_75"
+        app:cardCornerRadius="25dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:text="@string/cancel"
+            android:textSize="20sp"
+            android:textColor="@color/white"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
         android:id="@+id/button_run_in_background"
         android:layout_width="match_parent"
         android:layout_height="50dp"
