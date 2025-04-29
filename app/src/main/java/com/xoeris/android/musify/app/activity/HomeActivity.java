@@ -8,26 +8,30 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.xoeris.android.musify.R;
-import com.xoeris.android.musify.app.dialog.PermissionDialog;
-import com.xoeris.android.xesc.system.core.module.media.ux.audio.manager.PermissionManager;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.manager.SoundFusionNotificationManager;
 import com.xoeris.android.musify.app.fragment.HomeFragment;
 import com.xoeris.android.musify.app.fragment.SettingsFragment;
@@ -36,6 +40,8 @@ import com.xoeris.android.xesc.system.core.module.media.ux.audio.service.SoundFu
 import com.xoeris.android.xesc.system.core.module.media.ui.VortexSlider;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SongByte;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SoundFusion;
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("all")
 public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPlayerListener {
@@ -45,6 +51,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
     public static final int PERMISSION_REQUEST_CODE = 100;
     private static final String PREFS_NAME = "music_player_prefs";
     private static final float SWIPE_THRESHOLD = 50.0f;
+    private List<String> permissionsNeeded = new ArrayList<>();
     public ImageView albumButton;
     private LinearLayout bottomFABLayout;
     private LinearLayout bottomLayout;
@@ -84,7 +91,6 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
     @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, androidx.core.app.ComponentActivity, android.app.Activity
     protected void onCreate(Bundle savedInstanceState) {
         SharedPreferences preferences = getSharedPreferences("ThemePrefs", 0);
-        sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         int themeMode = preferences.getInt("theme_mode", -1);
         AppCompatDelegate.setDefaultNightMode(themeMode);
         SharedPreferences prefs = getSharedPreferences(PREFS_NAME, 0);
@@ -92,21 +98,6 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         int repeatMode = prefs.getInt(KEY_REPEAT_MODE, 0);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_activity_home);
-
-        // Check and request permissions
-        PermissionManager.checkAndRequestPermissions(this, new PermissionDialog.PermissionDialogListener() {
-            @Override
-            public void onAllPermissionsGranted() {
-                // Permissions granted, continue with your app logic
-            }
-
-            @Override
-            public void onPermissionsDenied() {
-                // Permissions denied, show a toast or handle accordingly
-                Toast.makeText(HomeActivity.this, "Permissions are required to use Musify properly.", Toast.LENGTH_LONG).show();
-            }
-        });
-
         this.soundFusion = SoundFusion.getInstance(this);
         this.soundFusion.setListener(this);
         this.notificationManager = new SoundFusionNotificationManager(this);
@@ -191,14 +182,14 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         });
         if (savedInstanceState == null) {
             switchFragment(new HomeFragment());
-            updateIconAndTint(this.homeIcon, R.drawable.ic_home_fill);
+            updateIconAndTint(this.homeIcon, R.drawable.ic_home_fill, true);
         }
         this.homeIcon.setOnClickListener(new View.OnClickListener() { // from class: com.xoeris.app.musify.activities.HomeActivity.8
             @Override // android.view.View.OnClickListener
             public void onClick(View v) {
                 if (!(HomeActivity.this.currentFragment instanceof HomeFragment)) {
                     HomeActivity.this.switchFragment(new HomeFragment());
-                    HomeActivity.this.updateIconAndTint(HomeActivity.this.homeIcon, R.drawable.ic_home_fill);
+                    HomeActivity.this.updateIconAndTint(HomeActivity.this.homeIcon, R.drawable.ic_home_fill, true);
                     HomeActivity.this.resetIconAndTint(HomeActivity.this.settingIcon, R.drawable.ic_settings);
                     HomeActivity.this.currentFragment = new HomeFragment();
                 }
@@ -209,7 +200,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
             public void onClick(View v) {
                 if (!(HomeActivity.this.currentFragment instanceof SettingsFragment)) {
                     HomeActivity.this.switchFragment(new SettingsFragment());
-                    HomeActivity.this.updateIconAndTint(HomeActivity.this.settingIcon, R.drawable.ic_settings_fill);
+                    HomeActivity.this.updateIconAndTint(HomeActivity.this.settingIcon, R.drawable.ic_settings_fill, true);
                     HomeActivity.this.resetIconAndTint(HomeActivity.this.homeIcon, R.drawable.ic_home);
                     HomeActivity.this.currentFragment = new SettingsFragment();
                 }
@@ -238,29 +229,12 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         updateMusicData();
         updateAlbumArtwork();
         updateRepeatButton(repeatMode);
+        checkAndRequestPermissions();
         startService(new Intent(this, (Class<?>) SoundFusionService.class));
         setDefaultAlbumArt();
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // Pass context along with other parameters
-        PermissionManager.onRequestPermissionsResult(this, requestCode, permissions, grantResults, new PermissionDialog.PermissionDialogListener() {
-            @Override
-            public void onAllPermissionsGranted() {
-                // Handle permission granted
-            }
-
-            @Override
-            public void onPermissionsDenied() {
-                // Handle permission denied
-            }
-        });
-    }
-
-boolean m206lambda$onCreate$0$comxoerisappmusifyactivitiesHomeActivity(View v, MotionEvent event) {
+    boolean m206lambda$onCreate$0$comxoerisappmusifyactivitiesHomeActivity(View v, MotionEvent event) {
         switch (event.getAction()) {
             case 0:
                 this.touchStartY = event.getY();
@@ -444,20 +418,20 @@ boolean m206lambda$onCreate$0$comxoerisappmusifyactivitiesHomeActivity(View v, M
             this.songCurrentDuration.setText(formatTime(currentPosition));
             this.songDuration.setText(formatTime(duration));
             this.notificationManager.createNotification(
-                this.soundFusion.getCurrentSong().getTitle(),
-                this.soundFusion.getCurrentSong().getArtist(),
-                this.soundFusion.isPlaying(),
-                this.soundFusion.getCurrentSong(),
-                currentPosition,
-                duration
+                    this.soundFusion.getCurrentSong().getTitle(),
+                    this.soundFusion.getCurrentSong().getArtist(),
+                    this.soundFusion.isPlaying(),
+                    this.soundFusion.getCurrentSong(),
+                    currentPosition,
+                    duration
             );
         }
         if (this.bottomSheetFragment != null && this.bottomSheetFragment.isVisible()) {
             this.bottomSheetFragment.updateUI(
-                this.soundFusion.getCurrentSong(),
-                this.soundFusion.isPlaying(),
-                this.soundFusion.getCurrentPosition(),
-                this.soundFusion.getDuration()
+                    this.soundFusion.getCurrentSong(),
+                    this.soundFusion.isPlaying(),
+                    this.soundFusion.getCurrentPosition(),
+                    this.soundFusion.getDuration()
             );
         }
     }
@@ -568,7 +542,7 @@ boolean m206lambda$onCreate$0$comxoerisappmusifyactivitiesHomeActivity(View v, M
 
     @Override // com.xoeris.app.musify.activities.BaseActivity, androidx.activity.ComponentActivity, android.app.Activity
     public void onBackPressed() {
-        moveTaskToBack(true);
+        onConfirmExitDialog();
     }
 
     @Override // com.xoeris.system.core.module.media.ux.audio.SoundFusion.OnMusicPlayerListener
@@ -602,12 +576,12 @@ boolean m206lambda$onCreate$0$comxoerisappmusifyactivitiesHomeActivity(View v, M
                     HomeActivity.this.seekBar.setProgress(currentPosition);
                     HomeActivity.this.songCurrentDuration.setText(HomeActivity.this.formatTime(currentPosition));
                     HomeActivity.this.songDuration.setText(HomeActivity.this.formatTime(duration));
-                    
+
                     // Update MediaSession playback state
                     if (HomeActivity.this.notificationManager != null) {
                         HomeActivity.this.notificationManager.updateMediaSessionPlaybackState(
-                            currentPosition,
-                            HomeActivity.this.soundFusion.isPlaying()
+                                currentPosition,
+                                HomeActivity.this.soundFusion.isPlaying()
                         );
                     }
                 }
@@ -683,6 +657,105 @@ boolean m206lambda$onCreate$0$comxoerisappmusifyactivitiesHomeActivity(View v, M
         return String.format("%02d:%02d.%02d", Integer.valueOf(minutes), Integer.valueOf(seconds), Integer.valueOf(ms));
     }
 
+    private void checkAndRequestPermissions() {
+        if (ContextCompat.checkSelfPermission(this, "android.permission.POST_NOTIFICATIONS") != 0) {
+            permissionsNeeded.add("android.permission.POST_NOTIFICATIONS");
+        }
+        if (ContextCompat.checkSelfPermission(this, "android.permission.READ_MEDIA_AUDIO") != 0) {
+            permissionsNeeded.add("android.permission.READ_MEDIA_AUDIO");
+        }
+        if (!permissionsNeeded.isEmpty()) {
+            onRequestPermissionsDialog();
+        }
+        if (permissionsNeeded.isEmpty()) {
+            // Do Nothing
+        }
+    }
+
+    private void onConfirmExitDialog() {
+        AlertDialog dialogConfirmExit = new AlertDialog.Builder(this).create();
+        View inflateConfirmExit = getLayoutInflater().inflate(R.layout.layout_dialog_exit, null);
+        dialogConfirmExit.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogConfirmExit.setView(inflateConfirmExit);
+        CardView buttonExitConfirmExit = inflateConfirmExit.findViewById(R.id.button_exit);
+        CardView buttonRunInBackgroundConfirmExit = inflateConfirmExit.findViewById(R.id.button_run_in_background);
+
+        buttonExitConfirmExit.setOnClickListener(v -> {
+            dialogConfirmExit.dismiss();
+            SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, 0).edit();
+            editor.putBoolean(KEY_SHUFFLE_STATE, this.soundFusion.isShuffleEnabled());
+            editor.putInt(KEY_REPEAT_MODE, this.soundFusion.getRepeatMode());
+            editor.apply();
+            if (isFinishing()) {
+                if (this.seekBarHandler != null) {
+                    this.seekBarHandler.removeCallbacks(this.seekBarRunnable);
+                }
+                if (this.soundFusion != null) {
+                    this.soundFusion.release();
+                }
+                if (this.notificationManager != null) {
+                    this.notificationManager.cancelNotification();
+                }
+                stopService(new Intent(this, (Class<?>) SoundFusionService.class));
+            }
+            finishAffinity();
+        });
+
+        buttonRunInBackgroundConfirmExit.setOnClickListener(v -> {
+            dialogConfirmExit.dismiss();
+            moveTaskToBack(true);
+
+        });
+        dialogConfirmExit.show();
+    }
+
+    private void onRequestPermissionsDialog() {
+        AlertDialog dialogRequestPermissions = new AlertDialog.Builder(this).create();
+        View inflateRequestPermissions = getLayoutInflater().inflate(R.layout.layout_dialog_request_permissions, null);
+        dialogRequestPermissions.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogRequestPermissions.setView(inflateRequestPermissions);
+        CardView buttonGrantRequestPermissions = inflateRequestPermissions.findViewById(R.id.button_grant);
+        CardView buttonCancelRequestPermissions = inflateRequestPermissions.findViewById(R.id.button_cancel);
+
+        buttonGrantRequestPermissions.setOnClickListener(v -> {
+            dialogRequestPermissions.dismiss();
+            ActivityCompat.requestPermissions(this, (String[]) permissionsNeeded.toArray(new String[0]), 100);
+        });
+
+        buttonCancelRequestPermissions.setOnClickListener(v -> {
+            dialogRequestPermissions.dismiss();
+            onDeniedPermissionsDialog();
+        });
+        dialogRequestPermissions.show();
+    }
+
+    private void onDeniedPermissionsDialog() {
+        AlertDialog dialogDeniedPermissions = new AlertDialog.Builder(this).create();
+        View inflateDeniedPermissions = getLayoutInflater().inflate(R.layout.layout_dialog_denied_permissions, null);
+        dialogDeniedPermissions.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialogDeniedPermissions.setView(inflateDeniedPermissions);
+
+        CardView buttonCancelDeniedPermissions = inflateDeniedPermissions.findViewById(R.id.button_exit);
+
+        buttonCancelDeniedPermissions.setOnClickListener(v -> {
+            dialogDeniedPermissions.dismiss();
+            finishAffinity(); // Exit the app if they cancel manually
+        });
+        dialogDeniedPermissions.show();
+    }
+
+    @Override // androidx.fragment.app.FragmentActivity, androidx.activity.ComponentActivity, android.app.Activity
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == 100) {
+            for (int result : grantResults) {
+                if (result != 0) {
+                    return;
+                }
+            }
+        }
+    }
+
     /* JADX INFO: Access modifiers changed from: private */
     public void expandView(final View view) {
         view.setVisibility(0);
@@ -743,14 +816,15 @@ boolean m206lambda$onCreate$0$comxoerisappmusifyactivitiesHomeActivity(View v, M
     }
 
     /* JADX INFO: Access modifiers changed from: private */
-    public void updateIconAndTint(ImageView icon, int iconRes) {
+    public void updateIconAndTint(ImageView icon, int iconRes, boolean useDynamic) {
         icon.setImageResource(iconRes);
-        icon.setColorFilter(getResources().getColor(R.color.blue));
+        int color;
+        icon.setColorFilter(androidx.core.content.ContextCompat.getColor(this, R.color.blue));
     }
 
     /* JADX INFO: Access modifiers changed from: private */
     public void resetIconAndTint(ImageView icon, int iconRes) {
         icon.setImageResource(iconRes);
-        icon.setColorFilter(getResources().getColor(R.color.text));
+        icon.setColorFilter(androidx.core.content.ContextCompat.getColor(this, R.color.text));
     }
 }

@@ -22,4 +22,9 @@
     <string name="permissions_required">Permissions Required</string>
     <string name="grant_permissions">Grant Permissions</string>
     <string name="cancel">Cancel</string>
+    <string name="permissions_denied">Permissions Denied</string>
+    <string name="please_grant_the_necessary_permissions_to_continue_using_the_app">Please grant the necessary permissions to continue using the app.</string>
+    <string name="exit">Exit</string>
+    <string name="exit_musify">Exit Musify?</string>
+    <string name="exit_confirmation">Are you sure you want to exit Musify? You can exit to close and end all activity or run in background for music playback and notification background running.</string>
 </resources>
