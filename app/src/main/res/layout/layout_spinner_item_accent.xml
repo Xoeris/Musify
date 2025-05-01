@@ -5,10 +5,6 @@
     android:layout_height="wrap_content"
     android:gravity="center_vertical"
     android:textColor="@color/text"
-    android:textSize="16sp"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingTop="12dp"
-    android:paddingBottom="12dp"
+    android:textSize="12sp"
     android:ellipsize="end"
     android:maxLines="1" />
