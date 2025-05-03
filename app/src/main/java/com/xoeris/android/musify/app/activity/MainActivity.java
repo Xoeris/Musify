@@ -14,6 +14,7 @@ import com.xoeris.android.xesc.system.core.module.media.ui.UltraVideo;
 public class MainActivity extends AppCompatActivity {
     public static int currentMode;
     private boolean hasStartedNext = false; // Prevent double calls
+    private UltraVideo ultraVideo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +32,15 @@ public class MainActivity extends AppCompatActivity {
                 (currentMode == android.content.res.Configuration.UI_MODE_NIGHT_YES ?
                         R.raw.brand_logo_b : R.raw.brand_logo_w);
 
-        final UltraVideo ultraVideo = findViewById(R.id.videoView1);
+        ultraVideo = findViewById(R.id.videoView1);
+
+        // Add null check to prevent crash
+        if (ultraVideo == null) {
+            // Handle the error - maybe start the next activity directly or show an error message
+            startNextActivity();
+            return;
+        }
+
         Uri uri = Uri.parse(videoPath);
 
         // Configure video view
