@@ -66,6 +66,15 @@
                 android:layout_height="@dimen/control_icon_size"
                 android:layout_margin="@dimen/spacing_xsmall"
                 style="@style/PlayerControlIcon"/>
+
+            <ImageView
+                android:id="@+id/queue_icon"
+                android:src="@drawable/ic_queue_music"
+                android:layout_width="@dimen/queue_icon_size"
+                android:layout_height="@dimen/queue_icon_size"
+                android:layout_margin="@dimen/spacing_xsmall"
+                style="@style/PlayerControlIcon"/>
+
         </LinearLayout>
         <LinearLayout
             android:gravity="center"

@@ -23,7 +23,6 @@ import com.xoeris.android.xesc.system.core.module.media.ux.audio.SongByte;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.adapter.SongByteAdapter;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SoundFusion;
 
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,7 +80,7 @@ public class HomeFragment extends Fragment {
             if (getActivity() instanceof HomeActivity) {
                 ((HomeActivity) getActivity()).syncUIState();
             }
-            this.soundFusion.setPlaylist(this.songByteList, originalIndex);
+            this.soundFusion.setPlaylist(this.songByteList, originalIndex, false);
             this.soundFusion.playSong(requireContext(), Uri.parse(song.getPath()), song.getTitle(), song.getArtist());
             final Handler handler = new Handler();
             Runnable updateRunnable = new Runnable() { // from class: com.xoeris.app.musify.fragments.HomeFragment.1

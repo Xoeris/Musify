@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
@@ -22,6 +25,10 @@ import com.xoeris.android.musify.R;
 import com.xoeris.android.musify.app.activity.HomeActivity;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SongByte;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SoundFusion;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.adapter.SongByteAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 @SuppressWarnings("all")
@@ -49,6 +56,9 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
     private TextView songDuration;
     private TextView songTitleTextView;
     private SoundFusion soundFusion;
+    private RecyclerView queueRecyclerView;
+    private SongByteAdapter queueAdapter;
+    private List<SongByte> queueList = new ArrayList<>();
 
     public interface BottomSheetCallback {
         void onNextClicked();
@@ -80,7 +90,8 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
         this.dismissListener = listener;
     }
 
-    @Override // androidx.fragment.app.DialogFragment, android.content.DialogInterface.OnDismissListener
+    @Override
+    // androidx.fragment.app.DialogFragment, android.content.DialogInterface.OnDismissListener
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         if (this.dismissListener != null) {
@@ -458,18 +469,21 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
             }
         });
         this.seekBar.setOnSeekBarChangeListener(new VortexSlider.OnSeekBarChangeListener() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet.2
-            @Override // com.xoeris.system.core.module.media.ui.view.VortexSlider.OnSeekBarChangeListener
+            @Override
+            // com.xoeris.system.core.module.media.ui.view.VortexSlider.OnSeekBarChangeListener
             public void onProgressChanged(VortexSlider vortexSlider, int progress, boolean fromUser) {
                 if (fromUser) {
                     DialogSheet.this.soundFusion.seekTo(progress);
                 }
             }
 
-            @Override // com.xoeris.system.core.module.media.ui.view.VortexSlider.OnSeekBarChangeListener
+            @Override
+            // com.xoeris.system.core.module.media.ui.view.VortexSlider.OnSeekBarChangeListener
             public void onStartTrackingTouch(VortexSlider vortexSlider) {
             }
 
-            @Override // com.xoeris.system.core.module.media.ui.view.VortexSlider.OnSeekBarChangeListener
+            @Override
+            // com.xoeris.system.core.module.media.ui.view.VortexSlider.OnSeekBarChangeListener
             public void onStopTrackingTouch(VortexSlider vortexSlider) {
             }
         });
@@ -546,7 +560,8 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
         this.repeatButton.setImageResource(iconRes);
     }
 
-    @Override // com.google.android.material.bottomsheet.BottomSheetDialogFragment, androidx.appcompat.app.AppCompatDialogFragment, androidx.fragment.app.DialogFragment
+    @Override
+    // com.google.android.material.bottomsheet.BottomSheetDialogFragment, androidx.appcompat.app.AppCompatDialogFragment, androidx.fragment.app.DialogFragment
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         Dialog dialog = super.onCreateDialog(savedInstanceState);
         dialog.setOnShowListener(new DialogInterface.OnShowListener() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda14

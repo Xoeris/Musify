@@ -166,11 +166,11 @@ public class SoundFusion {
         });
     }
 
-    public void setPlaylist(List<SongByte> songBytes, int startIndex) {
+    public void setPlaylist(List<SongByte> songBytes, int startIndex, boolean fromUserReorder) {
         this.playlist = new ArrayList(songBytes);
         this.currentSongIndex = startIndex;
         this.playedSongs.clear();
-        if (this.isShuffleEnabled) {
+        if (this.isShuffleEnabled && !fromUserReorder) {
             Collections.shuffle(this.playlist);
             for (int i = 0; i < this.playlist.size(); i++) {
                 if (this.playlist.get(i).getPath().equals(songBytes.get(startIndex).getPath())) {
@@ -194,6 +194,30 @@ public class SoundFusion {
             this.playlist.add(currentSongByte);
             this.playlist.addAll(newPlaylist);
             this.currentSongIndex = 0;
+            this.playedSongs.clear();
+            this.playedSongs.add(Integer.valueOf(this.currentSongIndex));
+            return;
+        } else if (!this.isShuffleEnabled && !this.playlist.isEmpty()) {
+            // Maintain current song when shuffle is turned off
+            SongByte currentSongByte = getCurrentSong();
+            List<SongByte> orderedList = new ArrayList<>();
+            // Find the original order from allSongBytes that matches the playlist
+            for (SongByte song : this.allSongBytes) {
+                for (SongByte pSong : this.playlist) {
+                    if (song.getPath().equals(pSong.getPath())) {
+                        orderedList.add(song);
+                        break;
+                    }
+                }
+            }
+            this.playlist = orderedList;
+            // Set currentSongIndex to the index of the current song in the new ordered playlist
+            for (int i = 0; i < this.playlist.size(); i++) {
+                if (this.playlist.get(i).getPath().equals(currentSongByte.getPath())) {
+                    this.currentSongIndex = i;
+                    break;
+                }
+            }
             this.playedSongs.clear();
             this.playedSongs.add(Integer.valueOf(this.currentSongIndex));
             return;
@@ -270,16 +294,9 @@ public class SoundFusion {
         if (this.playlist.isEmpty()) {
             return;
         }
+        // Always advance to the next song in the queue order
         if (this.repeatMode == 2) { // Repeat one
             // Stay on the current song
-        } else if (this.isShuffleEnabled) {
-            if (getUnplayedCount() > 0) {
-                this.currentSongIndex = getNextUnplayedShuffleSong();
-            } else {
-                // Reset played songs when all songs have been played
-                this.playedSongs.clear();
-                this.currentSongIndex = getNextUnplayedShuffleSong();
-            }
         } else if (this.currentSongIndex < this.playlist.size() - 1) {
             this.currentSongIndex++;
         } else if (this.repeatMode == 1) { // Repeat all
@@ -291,7 +308,6 @@ public class SoundFusion {
         if (this.listener != null) {
             SongByte currentSong = getCurrentSong();
             if (currentSong != null) {
-                // Ensure onSongChanged is called
                 this.listener.onSongChanged(currentSong.getTitle(), currentSong.getArtist());
             }
         }
@@ -305,19 +321,11 @@ public class SoundFusion {
             seekTo(0);
             return;
         }
-        if (this.repeatMode == 2) {
-            if (this.isShuffleEnabled) {
-                this.currentSongIndex = (int) (Math.random() * this.playlist.size());
-            }
-        } else if (this.isShuffleEnabled) {
-            if (this.repeatMode == 1) {
-                this.currentSongIndex = (int) (Math.random() * this.playlist.size());
-            } else if (this.playedSongs.size() > 1) {
-                this.currentSongIndex = getLastPlayedSong();
-            }
+        if (this.repeatMode == 2) { // Repeat one
+            // Stay on the current song
         } else if (this.currentSongIndex > 0) {
             this.currentSongIndex--;
-        } else if (this.repeatMode == 1) {
+        } else if (this.repeatMode == 1) { // Repeat all
             this.currentSongIndex = this.playlist.size() - 1;
         }
         fadeOut(this.mediaPlayer);
@@ -362,10 +370,10 @@ public class SoundFusion {
     }
 
     public SongByte getCurrentSong() {
-        if (this.currentSongIndex < 0 || this.currentSongIndex >= this.playlist.size()) {
-            return null;
+        if (playlist != null && currentSongIndex >= 0 && currentSongIndex < playlist.size()) {
+            return playlist.get(currentSongIndex);
         }
-        return this.playlist.get(this.currentSongIndex);
+        return null;
     }
 
     private SoundFusion(Context context) {
@@ -626,5 +634,21 @@ public class SoundFusion {
     public void setRepeatMode(int mode) {
         this.repeatMode = mode;
         this.context.getSharedPreferences(PREFS_NAME, 0).edit().putInt("repeat_mode", mode).apply();
+    }
+
+    // Add methods to get next songs in queue and previous songs
+    /**
+     * Returns the queue order as it will be played, considering shuffle, repeat, and playedSongs state.
+     * This method now reflects the actual upcoming play order, matching playback logic.
+     */
+    public List<SongByte> getCurrentQueueOrder() {
+        return new ArrayList<>(this.playlist);
+    }
+    public int getCurrentSongIndex() {
+        return this.currentSongIndex;
+    }
+    public List<SongByte> getPreviousSongs() {
+        if (playlist == null || playlist.isEmpty() || currentSongIndex <= 0) return new ArrayList<>();
+        return new ArrayList<>(playlist.subList(0, currentSongIndex));
     }
 }

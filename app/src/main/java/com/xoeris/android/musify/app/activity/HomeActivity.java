@@ -16,7 +16,6 @@ import android.os.Handler;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,6 +31,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.xoeris.android.musify.R;
+import com.xoeris.android.xesc.system.core.module.media.ui.QueueDialogSheet;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.manager.SoundFusionNotificationManager;
 import com.xoeris.android.musify.app.fragment.HomeFragment;
 import com.xoeris.android.musify.app.fragment.SettingsFragment;
@@ -56,6 +56,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
     private LinearLayout bottomFABLayout;
     private LinearLayout bottomLayout;
     private DialogSheet bottomSheetFragment;
+    private QueueDialogSheet bottomSheetFragment2;
     private ConstraintLayout constraintLayout1;
     private ConstraintLayout constraintLayout2;
     private ConstraintLayout constraintLayout3;
@@ -73,6 +74,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
     private Handler seekBarHandler;
     private Runnable seekBarRunnable;
     public ImageView settingIcon;
+    public ImageView queueIcon;
     private SharedPreferences sharedPreferences;
     public ImageView skipNextButton;
     public ImageView skipPreviousButton;
@@ -116,6 +118,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         this.homeIcon = (ImageView) findViewById(R.id.home_icon);
         this.settingIcon = (ImageView) findViewById(R.id.setting_icon);
         this.albumButton = (ImageView) findViewById(R.id.album_icon);
+        this.queueIcon = (ImageView) findViewById(R.id.queue_icon);
         this.seekBar = (VortexSlider) findViewById(R.id.vortexSlider);
         this.songCurrentDuration = (TextView) findViewById(R.id.song_current_duration);
         this.songDuration = (TextView) findViewById(R.id.song_duration);
@@ -126,6 +129,12 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
             @Override // android.view.View.OnClickListener
             public void onClick(View view) {
                 HomeActivity.this.showNowPlayingBottomSheet();
+            }
+        });
+        this.queueIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                HomeActivity.this.showQueueBottomSheet();
             }
         });
         customFab.setOnTouchListener(new View.OnTouchListener() { // from class: com.xoeris.app.musify.activities.HomeActivity$$ExternalSyntheticLambda3
@@ -229,6 +238,9 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         updateMusicData();
         updateAlbumArtwork();
         updateRepeatButton(repeatMode);
+        if (this.bottomSheetFragment2 != null) {
+            this.bottomSheetFragment2.refreshQueue();
+        }
         checkAndRequestPermissions();
         startService(new Intent(this, (Class<?>) SoundFusionService.class));
         setDefaultAlbumArt();
@@ -514,7 +526,16 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         this.bottomSheetFragment.show(getSupportFragmentManager(), this.bottomSheetFragment.getTag());
     }
 
-    /* renamed from: com.xoeris.app.musify.activities.HomeActivity$12, reason: invalid class name */
+    public void showQueueBottomSheet() {
+        if (this.bottomSheetFragment2 != null) {
+            getSupportFragmentManager().beginTransaction().remove(this.bottomSheetFragment2).commitAllowingStateLoss();
+        }
+        this.bottomSheetFragment2 = new QueueDialogSheet(this.soundFusion, this);
+        this.bottomSheetFragment2.setDismissListener((QueueDialogSheet.OnDismissListener));
+        updateMusicData();
+        this.bottomSheetFragment2.show(getSupportFragmentManager(), this.bottomSheetFragment2.getTag());
+    }
+
     class AnonymousClass12 implements BottomSheetDismissListener {
         AnonymousClass12() {
         }
