@@ -14,7 +14,7 @@ import android.util.Log;
 import androidx.constraintlayout.core.motion.utils.TypedValues;
 import com.xoeris.android.musify.app.activity.HomeActivity;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.manager.SoundFusionNotificationManager;
-import com.xoeris.android.xesc.system.core.module.media.ui.DialogSheet;
+import com.xoeris.android.xesc.system.core.module.media.ui.AlbumDialogSheet;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -29,7 +29,7 @@ public class SoundFusion {
     private static final String PREFS_NAME = "music_player_prefs";
     private static final int UPDATE_INTERVAL = 500;
     private static SoundFusion instance;
-    private DialogSheet bottomSheetFragment;
+    private AlbumDialogSheet bottomSheetFragment;
     private Context context;
     private String currentSong;
     private int fadeDuration;

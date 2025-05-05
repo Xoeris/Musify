@@ -32,7 +32,7 @@ import java.util.List;
 
 
 @SuppressWarnings("all")
-public class DialogSheet extends BottomSheetDialogFragment implements SoundFusion.OnMusicPlayerListener {
+public class AlbumDialogSheet extends BottomSheetDialogFragment implements SoundFusion.OnMusicPlayerListener {
     private ImageView albumArtContainer;
     private BottomSheetCallback callback;
     private int currentPosition;
@@ -111,7 +111,7 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
             requireActivity().runOnUiThread(new Runnable() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda6
                 @Override // java.lang.Runnable
                 public final void run() {
-                    DialogSheet.this.m236x1a75c9fe(songByte, currentPosition, duration, isPlaying);
+                    AlbumDialogSheet.this.m236x1a75c9fe(songByte, currentPosition, duration, isPlaying);
                 }
             });
         }
@@ -162,7 +162,7 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
             requireActivity().runOnUiThread(new Runnable() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda7
                 @Override // java.lang.Runnable
                 public final void run() {
-                    DialogSheet.this.m226xba018fc8(title, artist);
+                    AlbumDialogSheet.this.m226xba018fc8(title, artist);
                 }
             });
         }
@@ -194,7 +194,7 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
                 this.albumArtContainer.post(new Runnable() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda1
                     @Override // java.lang.Runnable
                     public final void run() {
-                        DialogSheet.this.m232xd135a6d1();
+                        AlbumDialogSheet.this.m232xd135a6d1();
                     }
                 });
             } else {
@@ -203,7 +203,7 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
                 this.albumArtContainer.post(new Runnable() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda2
                     @Override // java.lang.Runnable
                     public final void run() {
-                        DialogSheet.this.m233x5e705852();
+                        AlbumDialogSheet.this.m233x5e705852();
                     }
                 });
             }
@@ -215,7 +215,7 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
             this.albumArtContainer.post(new Runnable() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda3
                 @Override // java.lang.Runnable
                 public final void run() {
-                    DialogSheet.this.m234xebab09d3();
+                    AlbumDialogSheet.this.m234xebab09d3();
                 }
             });
         }
@@ -247,7 +247,7 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
             requireActivity().runOnUiThread(new Runnable() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda0
                 @Override // java.lang.Runnable
                 public final void run() {
-                    DialogSheet.this.m237xdc9b4183();
+                    AlbumDialogSheet.this.m237xdc9b4183();
                 }
             });
         }
@@ -295,7 +295,7 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
         collapseButton.setOnClickListener(new View.OnClickListener() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda8
             @Override // android.view.View.OnClickListener
             public final void onClick(View view2) {
-                DialogSheet.this.m224xe58e6027(view2);
+                AlbumDialogSheet.this.m224xe58e6027(view2);
             }
         });
         return view;
@@ -327,12 +327,12 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
         this.seekBarRunnable = new Runnable() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet.1
             @Override // java.lang.Runnable
             public void run() {
-                if (DialogSheet.this.soundFusion != null && DialogSheet.this.soundFusion.isPlaying()) {
-                    int currentPosition = DialogSheet.this.soundFusion.getCurrentPosition();
-                    int duration = DialogSheet.this.soundFusion.getDuration();
-                    DialogSheet.this.updateProgress(currentPosition, duration);
+                if (AlbumDialogSheet.this.soundFusion != null && AlbumDialogSheet.this.soundFusion.isPlaying()) {
+                    int currentPosition = AlbumDialogSheet.this.soundFusion.getCurrentPosition();
+                    int duration = AlbumDialogSheet.this.soundFusion.getDuration();
+                    AlbumDialogSheet.this.updateProgress(currentPosition, duration);
                 }
-                DialogSheet.this.seekBarHandler.postDelayed(this, 10L);
+                AlbumDialogSheet.this.seekBarHandler.postDelayed(this, 10L);
             }
         };
     }
@@ -343,7 +343,7 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
             requireActivity().runOnUiThread(new Runnable() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda5
                 @Override // java.lang.Runnable
                 public final void run() {
-                    DialogSheet.this.m235x4575cefe(progress, duration);
+                    AlbumDialogSheet.this.m235x4575cefe(progress, duration);
                 }
             });
         }
@@ -370,8 +370,8 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
             requireActivity().runOnUiThread(new Runnable() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda4
                 @Override // java.lang.Runnable
                 public final void run() {
-                    DialogSheet.this.m225xc56d1946(isPlaying);
-                    DialogSheet.this.updatePlayPauseButton();
+                    AlbumDialogSheet.this.m225xc56d1946(isPlaying);
+                    AlbumDialogSheet.this.updatePlayPauseButton();
                 }
             });
         }
@@ -441,31 +441,31 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
         this.playPauseButton.setOnClickListener(new View.OnClickListener() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda9
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
-                DialogSheet.this.m231xa570072c(view);
+                AlbumDialogSheet.this.m231xa570072c(view);
             }
         });
         this.skipPreviousButton.setOnClickListener(new View.OnClickListener() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda10
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
-                DialogSheet.this.m227x9f71d9bc(view);
+                AlbumDialogSheet.this.m227x9f71d9bc(view);
             }
         });
         this.skipNextButton.setOnClickListener(new View.OnClickListener() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda11
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
-                DialogSheet.this.m228x2cac8b3d(view);
+                AlbumDialogSheet.this.m228x2cac8b3d(view);
             }
         });
         this.shuffleButton.setOnClickListener(new View.OnClickListener() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda12
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
-                DialogSheet.this.m229xb9e73cbe(view);
+                AlbumDialogSheet.this.m229xb9e73cbe(view);
             }
         });
         this.repeatButton.setOnClickListener(new View.OnClickListener() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda13
             @Override // android.view.View.OnClickListener
             public final void onClick(View view) {
-                DialogSheet.this.m230x4721ee3f(view);
+                AlbumDialogSheet.this.m230x4721ee3f(view);
             }
         });
         this.seekBar.setOnSeekBarChangeListener(new VortexSlider.OnSeekBarChangeListener() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet.2
@@ -473,7 +473,7 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
             // com.xoeris.system.core.module.media.ui.view.VortexSlider.OnSeekBarChangeListener
             public void onProgressChanged(VortexSlider vortexSlider, int progress, boolean fromUser) {
                 if (fromUser) {
-                    DialogSheet.this.soundFusion.seekTo(progress);
+                    AlbumDialogSheet.this.soundFusion.seekTo(progress);
                 }
             }
 
@@ -567,7 +567,7 @@ public class DialogSheet extends BottomSheetDialogFragment implements SoundFusio
         dialog.setOnShowListener(new DialogInterface.OnShowListener() { // from class: com.xoeris.app.musify.module.media.view.DialogSheet$$ExternalSyntheticLambda14
             @Override // android.content.DialogInterface.OnShowListener
             public final void onShow(DialogInterface dialogInterface) {
-                DialogSheet.this.m223x46d209ff(dialogInterface);
+                AlbumDialogSheet.this.m223x46d209ff(dialogInterface);
             }
         });
         return dialog;

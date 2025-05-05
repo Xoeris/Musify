@@ -35,7 +35,7 @@ import com.xoeris.android.xesc.system.core.module.media.ui.QueueDialogSheet;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.manager.SoundFusionNotificationManager;
 import com.xoeris.android.musify.app.fragment.HomeFragment;
 import com.xoeris.android.musify.app.fragment.SettingsFragment;
-import com.xoeris.android.xesc.system.core.module.media.ui.DialogSheet;
+import com.xoeris.android.xesc.system.core.module.media.ui.AlbumDialogSheet;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.service.SoundFusionService;
 import com.xoeris.android.xesc.system.core.module.media.ui.VortexSlider;
 import com.xoeris.android.xesc.system.core.module.media.ux.audio.SongByte;
@@ -55,7 +55,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
     public ImageView albumButton;
     private LinearLayout bottomFABLayout;
     private LinearLayout bottomLayout;
-    private DialogSheet bottomSheetFragment;
+    private AlbumDialogSheet bottomSheetFragment;
     private QueueDialogSheet bottomSheetFragment2;
     private ConstraintLayout constraintLayout1;
     private ConstraintLayout constraintLayout2;
@@ -517,7 +517,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         if (this.bottomSheetFragment != null) {
             getSupportFragmentManager().beginTransaction().remove(this.bottomSheetFragment).commitAllowingStateLoss();
         }
-        this.bottomSheetFragment = new DialogSheet();
+        this.bottomSheetFragment = new AlbumDialogSheet();
         this.bottomSheetFragment.setDismissListener(new AnonymousClass12());
         if (this.soundFusion != null && this.soundFusion.getCurrentSong() != null) {
             this.bottomSheetFragment.setInitialData(this.soundFusion.getCurrentSong(), this.soundFusion.isPlaying(), this.soundFusion.getCurrentPosition(), this.soundFusion.getDuration());

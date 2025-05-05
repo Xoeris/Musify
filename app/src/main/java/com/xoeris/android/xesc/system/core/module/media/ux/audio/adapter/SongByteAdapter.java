@@ -21,19 +21,24 @@ public class SongByteAdapter extends RecyclerView.Adapter<SongByteAdapter.ViewHo
     private OnSongClickListener listener;
     private List<SongByte> originalSongBytes;
     private List<SongByte> songBytes;
+    private int layoutResId = R.layout.layout_item_music;
 
     public interface OnSongClickListener {
         void onSongClick(SongByte songByte, int i);
     }
 
     public SongByteAdapter(List<SongByte> songBytes, OnSongClickListener listener) {
+        this(songBytes, listener, R.layout.layout_item_music);
+    }
+    public SongByteAdapter(List<SongByte> songBytes, OnSongClickListener listener, int layoutResId) {
         this.songBytes = songBytes;
         this.listener = listener;
+        this.layoutResId = layoutResId;
     }
 
     @Override // androidx.recyclerview.widget.RecyclerView.Adapter
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_item_music, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(layoutResId, parent, false);
         return new ViewHolder(view);
     }
 

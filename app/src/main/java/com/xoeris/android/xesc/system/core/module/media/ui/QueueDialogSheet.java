@@ -51,7 +51,7 @@ public class QueueDialogSheet extends BottomSheetDialogFragment {
                     updateQueueList();
                 }
             }
-        });
+        }, R.layout.layout_item_music_queue);
         queueRecyclerView.setAdapter(queueAdapter);
         itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0) {
             @Override
