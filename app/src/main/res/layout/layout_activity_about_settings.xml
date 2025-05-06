@@ -147,7 +147,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="© 2025 Xoeris. All rights reserved."
+                    android:text="@string/_2025_xoeris_all_rights_reserved"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:textColor="@color/text"
@@ -157,7 +157,7 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Experience music the way it was meant to be heard. With Musify, you're not just listening... you're feeling every note."
+                    android:text="@string/experience_music_the_way_it_was_meant_to_be_heard_with_musify_you_re_not_just_listening_you_re_feeling_every_note"
                     android:textStyle="italic"
                     android:textColor="@color/text"
                     android:gravity="center"
