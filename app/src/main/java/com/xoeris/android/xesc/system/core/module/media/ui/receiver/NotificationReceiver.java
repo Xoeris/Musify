@@ -3,7 +3,7 @@ package com.xoeris.android.xesc.system.core.module.media.ui.receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import com.xoeris.android.xesc.system.core.module.media.ux.audio.SoundFusion;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.HyperSound;
 
 @SuppressWarnings("all")
 public class NotificationReceiver extends BroadcastReceiver {
@@ -12,7 +12,7 @@ public class NotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         char c;
-        SoundFusion soundFusion = SoundFusion.getInstance(context);
+        HyperSound hyperSound = HyperSound.getInstance(context);
         String action = intent.getAction();
         switch (action.hashCode()) {
             case 560451710:
@@ -42,13 +42,13 @@ public class NotificationReceiver extends BroadcastReceiver {
         }
         switch (c) {
             case 0:
-                soundFusion.playPrevious();
+                hyperSound.playPrevious();
                 break;
             case 1:
-                soundFusion.playPause();
+                hyperSound.playPause();
                 break;
             case 2:
-                soundFusion.playNext();
+                hyperSound.playNext();
                 break;
         }
     }

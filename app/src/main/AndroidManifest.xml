@@ -48,7 +48,7 @@
             </intent-filter>
         </receiver>
         <service
-            android:name="com.xoeris.android.xesc.system.core.module.media.ux.audio.service.SoundFusionService"
+            android:name="com.xoeris.android.xesc.system.core.module.media.ux.audio.service.HyperSoundService"
             android:enabled="true"
             android:exported="false"/>
 

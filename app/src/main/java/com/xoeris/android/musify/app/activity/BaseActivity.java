@@ -5,7 +5,7 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Process;
 import androidx.appcompat.app.AppCompatActivity;
-import com.xoeris.android.xesc.system.core.module.media.ux.audio.service.SoundFusionService;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.service.HyperSoundService;
 
 @SuppressWarnings("all")
 public class BaseActivity extends AppCompatActivity {
@@ -40,7 +40,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     private void cleanupAndExit() {
-        stopService(new Intent(this, (Class<?>) SoundFusionService.class));
+        stopService(new Intent(this, (Class<?>) HyperSoundService.class));
         NotificationManager notificationManager = (NotificationManager) getSystemService("notification");
         notificationManager.cancelAll();
         Process.killProcess(Process.myPid());

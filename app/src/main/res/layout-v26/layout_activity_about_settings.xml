@@ -1,0 +1,170 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@android:color/transparent"
+        android:showDividers="middle"
+        android:dividerPadding="8dp">
+
+        <!-- Header with Back Icon and Title -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="0dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:layout_gravity="center_horizontal|center_vertical">
+
+            <ImageView
+                android:id="@+id/back"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/ic_chevron_right"
+                android:rotation="180"
+                android:scaleType="centerCrop"
+                app:tint="@color/grey" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@string/about"
+                android:layout_weight="1"
+                android:layout_gravity="center_vertical"
+                android:paddingEnd="30dp"
+                android:gravity="center_horizontal"
+                android:textStyle="bold"
+                android:textSize="24sp"
+                android:textColor="@color/text" />
+        </LinearLayout>
+
+        <!-- Scrollable Content Section -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/transparent">
+
+                <!-- Banner -->
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    app:cardCornerRadius="25dp">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/musify_banner"
+                        android:scaleType="centerCrop"
+                        android:contentDescription="@string/musify_banner" />
+
+                </androidx.cardview.widget.CardView>
+
+                <!-- Title -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="16dp"/>
+
+                <!-- Subtitle -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/a_next_generation_music_experience"
+                    android:textStyle="italic"
+                    android:textSize="16sp"
+                    android:textColor="@color/text"
+                    android:layout_gravity="center_horizontal"
+                    android:paddingBottom="16dp" />
+
+                <!-- About Musify -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:justificationMode="inter_word"
+                    android:text="@string/musify_is_a_feature_rich_next_generation_music_player_crafted_for_music_lovers_who_crave_more_from_their_listening_experience_available_on_android_with_ios_and_windows_versions_coming_soon_musify_transforms_your_device_into_a_high_fidelity_audio_hub_putting_your_music_library_front_and_center_whether_you_re_a_casual_listener_a_passionate_audiophile_or_somewhere_in_between_musify_delivers_a_sleek_powerful_and_personalized_musical_journey"
+                    android:textSize="18sp"
+                    android:textColor="@color/text"
+                    android:padding="8dp" />
+
+                <!-- Feature Sections (Example) -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/core_features"
+                    android:textStyle="bold"
+                    android:textSize="20sp"
+                    android:textColor="@color/text"
+                    android:paddingStart="16dp"
+                    android:paddingTop="24dp"
+                    android:paddingBottom="8dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/smart_playlists_n_10_band_equalizer_presets_n_advanced_audio_effects_n_lyrics_metadata_n_offline_first_n_dark_mode_themes_n_notification_controls_n_crossfade_gapless_playback"
+                    android:textSize="16sp"
+                    android:textColor="@color/text"
+                    android:padding="8dp" />
+
+                <!-- App Preview Images -->
+
+                <!-- Download Button -->
+
+                <!-- Warning -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/musify_is_not_officially_release_some_features_may_still_be_under_development"
+                    android:textSize="20sp"
+                    android:textColor="@color/text"
+                    android:padding="16dp"
+                    android:layout_marginTop="50dp"
+                    android:layout_marginBottom="100dp"
+                    android:textStyle="italic" />
+
+                <!-- Footer -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="© 2025 Xoeris. All rights reserved."
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/text"
+                    android:gravity="center"
+                    android:paddingTop="16dp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Experience music the way it was meant to be heard. With Musify, you're not just listening... you're feeling every note."
+                    android:textStyle="italic"
+                    android:textColor="@color/text"
+                    android:gravity="center"
+                    android:paddingBottom="32dp"
+                    android:paddingTop="8dp"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

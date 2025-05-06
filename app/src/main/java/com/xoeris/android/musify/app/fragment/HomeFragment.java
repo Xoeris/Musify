@@ -19,9 +19,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.xoeris.android.musify.R;
 import com.xoeris.android.musify.app.activity.HomeActivity;
-import com.xoeris.android.xesc.system.core.module.media.ux.audio.SongByte;
-import com.xoeris.android.xesc.system.core.module.media.ux.audio.adapter.SongByteAdapter;
-import com.xoeris.android.xesc.system.core.module.media.ux.audio.SoundFusion;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.adapter.UltraSongAdapter;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.HyperSound;
 
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
@@ -31,13 +30,13 @@ import java.util.concurrent.Executors;
 
 @SuppressWarnings("all")
 public class HomeFragment extends Fragment {
-    private SongByteAdapter adapter;
-    private List<SongByte> filteredList;
+    private UltraSongAdapter adapter;
+    private List<com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong> filteredList;
     private RecyclerView recyclerView;
     private EditText searchEditText;
-    private List<SongByte> songByteList;
-    private SoundFusion soundFusion;
-    private static List<SongByte> staticSongCache = null;
+    private List<com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong> ultraSongList;
+    private HyperSound hyperSound;
+    private static List<com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong> staticSongCache = null;
     private static boolean isCacheLoaded = false;
     private static final String SONG_CACHE_KEY = "song_cache";
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -49,13 +48,13 @@ public class HomeFragment extends Fragment {
         this.searchEditText = (EditText) view.findViewById(R.id.searchEditText);
         this.recyclerView = (RecyclerView) view.findViewById(R.id.searchListView);
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        this.soundFusion = SoundFusion.getInstance(requireContext());
-        this.songByteList = new ArrayList<>();
+        this.hyperSound = HyperSound.getInstance(requireContext());
+        this.ultraSongList = new ArrayList<>();
         this.filteredList = new ArrayList<>();
-        this.adapter = new SongByteAdapter(this.filteredList, new SongByteAdapter.OnSongClickListener() {
+        this.adapter = new UltraSongAdapter(this.filteredList, new UltraSongAdapter.OnSongClickListener() {
             @Override
-            public void onSongClick(SongByte songByte, int i) {
-                HomeFragment.this.m217xc25240b1(songByte, i);
+            public void onSongClick(com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong ultraSong, int i) {
+                HomeFragment.this.m217xc25240b1(ultraSong, i);
             }
         });
         this.recyclerView.setAdapter(this.adapter);
@@ -74,14 +73,14 @@ public class HomeFragment extends Fragment {
     }
 
     /* renamed from: lambda$onCreateView$0$com-xoeris-app-musify-fragments-HomeFragment, reason: not valid java name */
-    /* synthetic */ void m217xc25240b1(SongByte song, int position) {
+    /* synthetic */ void m217xc25240b1(com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong song, int position) {
         int originalIndex;
-        if (!this.songByteList.isEmpty() && (originalIndex = findSongIndex(song)) != -1) {
+        if (!this.ultraSongList.isEmpty() && (originalIndex = findSongIndex(song)) != -1) {
             if (getActivity() instanceof HomeActivity) {
                 ((HomeActivity) getActivity()).syncUIState();
             }
-            this.soundFusion.setPlaylist(this.songByteList, originalIndex, false);
-            this.soundFusion.playSong(requireContext(), Uri.parse(song.getPath()), song.getTitle(), song.getArtist());
+            this.hyperSound.setPlaylist(this.ultraSongList, originalIndex, false);
+            this.hyperSound.playSong(requireContext(), Uri.parse(song.getPath()), song.getTitle(), song.getArtist());
             final Handler handler = new Handler();
             Runnable updateRunnable = new Runnable() { // from class: com.xoeris.app.musify.fragments.HomeFragment.1
                 int count = 0;
@@ -105,7 +104,7 @@ public class HomeFragment extends Fragment {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                List<SongByte> loadedSongs = new ArrayList<>();
+                List<com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong> loadedSongs = new ArrayList<>();
                 HomeFragment fragment = fragmentRef.get();
                 if (fragment == null || fragment.getActivity() == null) return;
                 ContentResolver contentResolver = fragment.getActivity().getContentResolver();
@@ -121,17 +120,17 @@ public class HomeFragment extends Fragment {
                             String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
                             String artist = cursor.getString(cursor.getColumnIndexOrThrow("artist"));
                             String duration = cursor.getString(cursor.getColumnIndexOrThrow(TypedValues.TransitionType.S_DURATION));
-                            SongByte songByte = new SongByte(title, artist, data, duration, duration);
-                            loadedSongs.add(songByte);
+                            com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong ultraSong = new com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong(title, artist, data, duration, duration);
+                            loadedSongs.add(ultraSong);
                             count++;
                             if (count % batchSize == 0) {
-                                final List<SongByte> batch = new ArrayList<>(loadedSongs);
+                                final List<com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong> batch = new ArrayList<>(loadedSongs);
                                 mainHandler.post(() -> {
                                     HomeFragment frag = fragmentRef.get();
                                     if (frag == null) return;
-                                    frag.songByteList.clear();
+                                    frag.ultraSongList.clear();
                                     frag.filteredList.clear();
-                                    frag.songByteList.addAll(batch);
+                                    frag.ultraSongList.addAll(batch);
                                     frag.filteredList.addAll(batch);
                                     staticSongCache = new ArrayList<>(batch);
                                     isCacheLoaded = true;
@@ -148,9 +147,9 @@ public class HomeFragment extends Fragment {
                 mainHandler.post(() -> {
                     HomeFragment frag = fragmentRef.get();
                     if (frag == null) return;
-                    frag.songByteList.clear();
+                    frag.ultraSongList.clear();
                     frag.filteredList.clear();
-                    frag.songByteList.addAll(loadedSongs);
+                    frag.ultraSongList.addAll(loadedSongs);
                     frag.filteredList.addAll(loadedSongs);
                     staticSongCache = new ArrayList<>(loadedSongs);
                     isCacheLoaded = true;
@@ -165,20 +164,20 @@ public class HomeFragment extends Fragment {
     public void filterSongs(String query) {
         this.filteredList.clear();
         if (query.isEmpty()) {
-            this.filteredList.addAll(this.songByteList);
+            this.filteredList.addAll(this.ultraSongList);
         } else {
-            for (SongByte songByte : this.songByteList) {
-                if (songByte.getTitle().toLowerCase().contains(query) || songByte.getArtist().toLowerCase().contains(query)) {
-                    this.filteredList.add(songByte);
+            for (com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong ultraSong : this.ultraSongList) {
+                if (ultraSong.getTitle().toLowerCase().contains(query) || ultraSong.getArtist().toLowerCase().contains(query)) {
+                    this.filteredList.add(ultraSong);
                 }
             }
         }
         this.adapter.notifyDataSetChanged();
     }
 
-    private int findSongIndex(SongByte songByte) {
-        for (int i = 0; i < this.songByteList.size(); i++) {
-            if (this.songByteList.get(i).getPath().equals(songByte.getPath())) {
+    private int findSongIndex(com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong ultraSong) {
+        for (int i = 0; i < this.ultraSongList.size(); i++) {
+            if (this.ultraSongList.get(i).getPath().equals(ultraSong.getPath())) {
                 return i;
             }
         }
@@ -196,7 +195,7 @@ public class HomeFragment extends Fragment {
         executorService.execute(new Runnable() {
             @Override
             public void run() {
-                List<SongByte> loadedSongs = new ArrayList<>();
+                List<com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong> loadedSongs = new ArrayList<>();
                 HomeFragment fragment = fragmentRef.get();
                 if (fragment == null || fragment.getActivity() == null) return;
                 ContentResolver contentResolver = fragment.getActivity().getContentResolver();
@@ -210,8 +209,8 @@ public class HomeFragment extends Fragment {
                             String title = cursor.getString(cursor.getColumnIndexOrThrow("title"));
                             String artist = cursor.getString(cursor.getColumnIndexOrThrow("artist"));
                             String duration = cursor.getString(cursor.getColumnIndexOrThrow(TypedValues.TransitionType.S_DURATION));
-                            SongByte songByte = new SongByte(title, artist, data, duration, duration);
-                            loadedSongs.add(songByte);
+                            com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong ultraSong = new com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong(title, artist, data, duration, duration);
+                            loadedSongs.add(ultraSong);
                         }
                     }
                 } catch (Exception e) {
@@ -234,9 +233,9 @@ public class HomeFragment extends Fragment {
                         }
                     }
                     if (changed) {
-                        frag.songByteList.clear();
+                        frag.ultraSongList.clear();
                         frag.filteredList.clear();
-                        frag.songByteList.addAll(loadedSongs);
+                        frag.ultraSongList.addAll(loadedSongs);
                         frag.filteredList.addAll(loadedSongs);
                         staticSongCache = new ArrayList<>(loadedSongs);
                         isCacheLoaded = true;

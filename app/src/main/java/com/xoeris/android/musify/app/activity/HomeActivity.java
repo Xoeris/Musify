@@ -31,20 +31,20 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import com.xoeris.android.musify.R;
-import com.xoeris.android.xesc.system.core.module.media.ui.QueueDialogSheet;
-import com.xoeris.android.xesc.system.core.module.media.ux.audio.manager.SoundFusionNotificationManager;
+import com.xoeris.android.xesc.system.core.module.media.ui.QueueSheet;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.manager.HyperSoundNotificationManager;
 import com.xoeris.android.musify.app.fragment.HomeFragment;
 import com.xoeris.android.musify.app.fragment.SettingsFragment;
-import com.xoeris.android.xesc.system.core.module.media.ui.AlbumDialogSheet;
-import com.xoeris.android.xesc.system.core.module.media.ux.audio.service.SoundFusionService;
+import com.xoeris.android.xesc.system.core.module.media.ui.AlbumSheet;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.service.HyperSoundService;
 import com.xoeris.android.xesc.system.core.module.media.ui.VortexSlider;
-import com.xoeris.android.xesc.system.core.module.media.ux.audio.SongByte;
-import com.xoeris.android.xesc.system.core.module.media.ux.audio.SoundFusion;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.UltraSong;
+import com.xoeris.android.xesc.system.core.module.media.ux.audio.HyperSound;
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("all")
-public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPlayerListener {
+public class HomeActivity extends BaseActivity implements HyperSound.OnMusicPlayerListener {
     private static final String KEY_FADE_DURATION = "fade_duration";
     private static final String KEY_REPEAT_MODE = "repeat_mode";
     private static final String KEY_SHUFFLE_STATE = "shuffle_state";
@@ -55,20 +55,20 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
     public ImageView albumButton;
     private LinearLayout bottomFABLayout;
     private LinearLayout bottomLayout;
-    private AlbumDialogSheet bottomSheetFragment;
-    private QueueDialogSheet bottomSheetFragment2;
+    private AlbumSheet bottomSheetFragment;
+    private QueueSheet bottomSheetFragment2;
     private ConstraintLayout constraintLayout1;
     private ConstraintLayout constraintLayout2;
     private ConstraintLayout constraintLayout3;
     private int currentPosition;
-    private SongByte currentSongByte;
+    private UltraSong currentUltraSong;
     private LinearLayout customFab;
     private int duration;
     private SeekBar fadeSeekBar;
     public ImageView homeIcon;
     private boolean isPlaying;
     public ImageView libraryIcon;
-    private SoundFusionNotificationManager notificationManager;
+    private HyperSoundNotificationManager notificationManager;
     public ImageView playPauseButton;
     private VortexSlider seekBar;
     private Handler seekBarHandler;
@@ -82,7 +82,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
     private TextView songCurrentDuration;
     private TextView songDuration;
     private TextView songTitleTextView;
-    private SoundFusion soundFusion;
+    private HyperSound hyperSound;
     private LinearLayout topFABLayout;
     private FrameLayout topLayout;
     private float touchStartY;
@@ -100,9 +100,9 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         int repeatMode = prefs.getInt(KEY_REPEAT_MODE, 0);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_activity_home);
-        this.soundFusion = SoundFusion.getInstance(this);
-        this.soundFusion.setListener(this);
-        this.notificationManager = new SoundFusionNotificationManager(this);
+        this.hyperSound = HyperSound.getInstance(this);
+        this.hyperSound.setListener(this);
+        this.notificationManager = new HyperSoundNotificationManager(this);
         setupSeekBarUpdater();
         this.songTitleTextView = (TextView) findViewById(R.id.song_title);
         this.songArtistTextView = (TextView) findViewById(R.id.song_artist);
@@ -166,9 +166,9 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         this.skipPreviousButton.setOnClickListener(new View.OnClickListener() { // from class: com.xoeris.app.musify.activities.HomeActivity.6
             @Override // android.view.View.OnClickListener
             public void onClick(View v) {
-                if (HomeActivity.this.soundFusion != null) {
-                    HomeActivity.this.soundFusion.playPrevious();
-                    HomeActivity.this.updatePlayPauseButton(HomeActivity.this.soundFusion.isPlaying());
+                if (HomeActivity.this.hyperSound != null) {
+                    HomeActivity.this.hyperSound.playPrevious();
+                    HomeActivity.this.updatePlayPauseButton(HomeActivity.this.hyperSound.isPlaying());
                     HomeActivity.this.updateMusicData();
                 }
             }
@@ -176,9 +176,9 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         this.skipNextButton.setOnClickListener(new View.OnClickListener() { // from class: com.xoeris.app.musify.activities.HomeActivity.7
             @Override // android.view.View.OnClickListener
             public void onClick(View v) {
-                if (HomeActivity.this.soundFusion != null) {
-                    HomeActivity.this.soundFusion.playNext();
-                    HomeActivity.this.updatePlayPauseButton(HomeActivity.this.soundFusion.isPlaying());
+                if (HomeActivity.this.hyperSound != null) {
+                    HomeActivity.this.hyperSound.playNext();
+                    HomeActivity.this.updatePlayPauseButton(HomeActivity.this.hyperSound.isPlaying());
                     HomeActivity.this.updateMusicData();
                 }
             }
@@ -219,7 +219,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
             @Override // com.xoeris.system.core.module.media.ui.view.VortexSlider.OnSeekBarChangeListener
             public void onProgressChanged(VortexSlider vortexSlider, int progress, boolean fromUser) {
                 if (fromUser) {
-                    HomeActivity.this.soundFusion.seekTo(progress);
+                    HomeActivity.this.hyperSound.seekTo(progress);
                 }
             }
 
@@ -231,9 +231,9 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
             public void onStopTrackingTouch(VortexSlider vortexSlider) {
             }
         });
-        this.soundFusion = SoundFusion.getInstance(this);
-        this.soundFusion.setListener(this);
-        this.notificationManager = new SoundFusionNotificationManager(this);
+        this.hyperSound = HyperSound.getInstance(this);
+        this.hyperSound.setListener(this);
+        this.notificationManager = new HyperSoundNotificationManager(this);
         this.notificationManager.setActionListener(new AnonymousClass11());
         updateMusicData();
         updateAlbumArtwork();
@@ -242,7 +242,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
             this.bottomSheetFragment2.refreshQueue();
         }
         checkAndRequestPermissions();
-        startService(new Intent(this, (Class<?>) SoundFusionService.class));
+        startService(new Intent(this, (Class<?>) HyperSoundService.class));
         setDefaultAlbumArt();
     }
 
@@ -274,13 +274,13 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
 
     /* renamed from: lambda$onCreate$1$com-xoeris-app-musify-activities-HomeActivity, reason: not valid java name */
     /* synthetic */ void m207lambda$onCreate$1$comxoerisappmusifyactivitiesHomeActivity(View v) {
-        this.soundFusion.playPause();
-        updatePlayPauseButton(this.soundFusion.isPlaying());
+        this.hyperSound.playPause();
+        updatePlayPauseButton(this.hyperSound.isPlaying());
         updateMusicData();
     }
 
-    public SoundFusion getSoundFusion() {
-        return soundFusion;
+    public HyperSound getSoundFusion() {
+        return hyperSound;
     }
 
     public VortexSlider getSeekBar() {
@@ -288,7 +288,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
     }
 
     /* renamed from: com.xoeris.app.musify.activities.HomeActivity$11, reason: invalid class name */
-    class AnonymousClass11 implements SoundFusionNotificationManager.NotificationActionListener {
+    class AnonymousClass11 implements HyperSoundNotificationManager.NotificationActionListener {
         AnonymousClass11() {
         }
 
@@ -304,7 +304,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
 
         /* renamed from: lambda$onPlayPauseClicked$0$com-xoeris-app-musify-activities-HomeActivity$11, reason: not valid java name */
         /* synthetic */ void m212xd20157ea() {
-            HomeActivity.this.soundFusion.playPause();
+            HomeActivity.this.hyperSound.playPause();
         }
 
         @Override // com.xoeris.app.musify.classes.MusicNotificationManager.NotificationActionListener
@@ -319,7 +319,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
 
         /* renamed from: lambda$onPreviousClicked$1$com-xoeris-app-musify-activities-HomeActivity$11, reason: not valid java name */
         /* synthetic */ void m213x54990416() {
-            HomeActivity.this.soundFusion.playPrevious();
+            HomeActivity.this.hyperSound.playPrevious();
         }
 
         @Override // com.xoeris.app.musify.classes.MusicNotificationManager.NotificationActionListener
@@ -334,14 +334,14 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
 
         /* renamed from: lambda$onNextClicked$2$com-xoeris-app-musify-activities-HomeActivity$11, reason: not valid java name */
         /* synthetic */ void m211x1d7d2531() {
-            HomeActivity.this.soundFusion.playNext();
+            HomeActivity.this.hyperSound.playNext();
         }
     }
 
     public void updateAlbumArtwork() {
-        if (this.soundFusion != null && this.soundFusion.getCurrentSong() != null) {
+        if (this.hyperSound != null && this.hyperSound.getCurrentSong() != null) {
             try {
-                String filePath = this.soundFusion.getCurrentSong().getPath();
+                String filePath = this.hyperSound.getCurrentSong().getPath();
                 MediaMetadataRetriever retriever = new MediaMetadataRetriever();
                 retriever.setDataSource(filePath);
                 byte[] albumArt = retriever.getEmbeddedPicture();
@@ -372,33 +372,33 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
     }
 
     public void syncUIState() {
-        if (this.soundFusion != null && this.soundFusion.getCurrentSong() != null) {
+        if (this.hyperSound != null && this.hyperSound.getCurrentSong() != null) {
             updateMusicData();
             if (this.bottomSheetFragment != null && this.bottomSheetFragment.isVisible()) {
-                this.bottomSheetFragment.updateUI(this.soundFusion.getCurrentSong(), this.soundFusion.isPlaying(), this.soundFusion.getCurrentPosition(), this.soundFusion.getDuration());
+                this.bottomSheetFragment.updateUI(this.hyperSound.getCurrentSong(), this.hyperSound.isPlaying(), this.hyperSound.getCurrentPosition(), this.hyperSound.getDuration());
             }
         }
     }
 
     public void updateMusicData() {
-        if (this.soundFusion != null && this.soundFusion.getCurrentSong() != null) {
+        if (this.hyperSound != null && this.hyperSound.getCurrentSong() != null) {
             if (this.isFirstPlay) {
                 expandView(this.bottomLayout);
                 this.isExpanded = true;
                 this.isFirstPlay = false;
             }
-            this.songTitleTextView.setText(this.soundFusion.getCurrentSong().getTitle());
-            this.songArtistTextView.setText(this.soundFusion.getCurrentSong().getArtist());
-            updatePlayPauseButton(this.soundFusion.isPlaying());
-            updateRepeatButton(this.soundFusion.getRepeatMode());
+            this.songTitleTextView.setText(this.hyperSound.getCurrentSong().getTitle());
+            this.songArtistTextView.setText(this.hyperSound.getCurrentSong().getArtist());
+            updatePlayPauseButton(this.hyperSound.isPlaying());
+            updateRepeatButton(this.hyperSound.getRepeatMode());
             updateAlbumArtwork();
-            int currentPosition = this.soundFusion.getCurrentPosition();
-            int duration = this.soundFusion.getDuration();
+            int currentPosition = this.hyperSound.getCurrentPosition();
+            int duration = this.hyperSound.getDuration();
             this.seekBar.setMax(duration);
             this.seekBar.setProgress(currentPosition);
             this.songCurrentDuration.setText(formatTime(currentPosition));
             this.songDuration.setText(formatTime(duration));
-            this.notificationManager.createNotification(this.soundFusion.getCurrentSong().getTitle(), this.soundFusion.getCurrentSong().getArtist(), this.soundFusion.isPlaying(), this.soundFusion.getCurrentSong(), this.soundFusion.getCurrentPosition(), this.soundFusion.getDuration());
+            this.notificationManager.createNotification(this.hyperSound.getCurrentSong().getTitle(), this.hyperSound.getCurrentSong().getArtist(), this.hyperSound.isPlaying(), this.hyperSound.getCurrentSong(), this.hyperSound.getCurrentPosition(), this.hyperSound.getDuration());
         }
     }
 
@@ -417,33 +417,33 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
             expandView(this.bottomLayout);
             this.isExpanded = true;
         }
-        if (this.soundFusion != null && this.soundFusion.getCurrentSong() != null) {
+        if (this.hyperSound != null && this.hyperSound.getCurrentSong() != null) {
             // Update song title and artist immediately
-            this.songTitleTextView.setText(this.soundFusion.getCurrentSong().getTitle());
-            this.songArtistTextView.setText(this.soundFusion.getCurrentSong().getArtist());
-            updatePlayPauseButton(this.soundFusion.isPlaying());
+            this.songTitleTextView.setText(this.hyperSound.getCurrentSong().getTitle());
+            this.songArtistTextView.setText(this.hyperSound.getCurrentSong().getArtist());
+            updatePlayPauseButton(this.hyperSound.isPlaying());
             updateAlbumArtwork();
-            int currentPosition = this.soundFusion.getCurrentPosition();
-            int duration = this.soundFusion.getDuration();
+            int currentPosition = this.hyperSound.getCurrentPosition();
+            int duration = this.hyperSound.getDuration();
             this.seekBar.setMax(duration);
             this.seekBar.setProgress(currentPosition);
             this.songCurrentDuration.setText(formatTime(currentPosition));
             this.songDuration.setText(formatTime(duration));
             this.notificationManager.createNotification(
-                    this.soundFusion.getCurrentSong().getTitle(),
-                    this.soundFusion.getCurrentSong().getArtist(),
-                    this.soundFusion.isPlaying(),
-                    this.soundFusion.getCurrentSong(),
+                    this.hyperSound.getCurrentSong().getTitle(),
+                    this.hyperSound.getCurrentSong().getArtist(),
+                    this.hyperSound.isPlaying(),
+                    this.hyperSound.getCurrentSong(),
                     currentPosition,
                     duration
             );
         }
         if (this.bottomSheetFragment != null && this.bottomSheetFragment.isVisible()) {
             this.bottomSheetFragment.updateUI(
-                    this.soundFusion.getCurrentSong(),
-                    this.soundFusion.isPlaying(),
-                    this.soundFusion.getCurrentPosition(),
-                    this.soundFusion.getDuration()
+                    this.hyperSound.getCurrentSong(),
+                    this.hyperSound.isPlaying(),
+                    this.hyperSound.getCurrentPosition(),
+                    this.hyperSound.getDuration()
             );
         }
     }
@@ -461,8 +461,8 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
     /* renamed from: lambda$onPlaybackStateChanged$3$com-xoeris-app-musify-activities-HomeActivity, reason: not valid java name */
     /* synthetic */ void m208x413a4dd6(boolean isPlaying) {
         updatePlayPauseButton(isPlaying);
-        if (this.soundFusion != null && this.soundFusion.getCurrentSong() != null) {
-            this.notificationManager.updateNotification(this.soundFusion.getCurrentSong().getTitle(), this.soundFusion.getCurrentSong().getArtist(), isPlaying, this.soundFusion.getCurrentSong(), this.soundFusion.getCurrentPosition(), this.soundFusion.getDuration());
+        if (this.hyperSound != null && this.hyperSound.getCurrentSong() != null) {
+            this.notificationManager.updateNotification(this.hyperSound.getCurrentSong().getTitle(), this.hyperSound.getCurrentSong().getArtist(), isPlaying, this.hyperSound.getCurrentSong(), this.hyperSound.getCurrentPosition(), this.hyperSound.getDuration());
         }
         if (isPlaying) {
             this.seekBarHandler.removeCallbacks(this.seekBarRunnable);
@@ -471,7 +471,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
             this.seekBarHandler.removeCallbacks(this.seekBarRunnable);
         }
         if (this.bottomSheetFragment != null && this.bottomSheetFragment.isVisible()) {
-            this.bottomSheetFragment.updateUI(this.soundFusion.getCurrentSong(), isPlaying, this.soundFusion.getCurrentPosition(), this.soundFusion.getDuration());
+            this.bottomSheetFragment.updateUI(this.hyperSound.getCurrentSong(), isPlaying, this.hyperSound.getCurrentPosition(), this.hyperSound.getDuration());
         }
     }
 
@@ -498,10 +498,10 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
     @Override // androidx.fragment.app.FragmentActivity, android.app.Activity
     protected void onResume() {
         super.onResume();
-        if (this.soundFusion != null) {
-            this.soundFusion.setListener(this);
+        if (this.hyperSound != null) {
+            this.hyperSound.setListener(this);
             updateMusicData();
-            if (this.soundFusion.isPlaying()) {
+            if (this.hyperSound.isPlaying()) {
                 this.seekBarHandler.post(this.seekBarRunnable);
             }
         }
@@ -517,10 +517,10 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         if (this.bottomSheetFragment != null) {
             getSupportFragmentManager().beginTransaction().remove(this.bottomSheetFragment).commitAllowingStateLoss();
         }
-        this.bottomSheetFragment = new AlbumDialogSheet();
+        this.bottomSheetFragment = new AlbumSheet();
         this.bottomSheetFragment.setDismissListener(new AnonymousClass12());
-        if (this.soundFusion != null && this.soundFusion.getCurrentSong() != null) {
-            this.bottomSheetFragment.setInitialData(this.soundFusion.getCurrentSong(), this.soundFusion.isPlaying(), this.soundFusion.getCurrentPosition(), this.soundFusion.getDuration());
+        if (this.hyperSound != null && this.hyperSound.getCurrentSong() != null) {
+            this.bottomSheetFragment.setInitialData(this.hyperSound.getCurrentSong(), this.hyperSound.isPlaying(), this.hyperSound.getCurrentPosition(), this.hyperSound.getDuration());
         }
         updateMusicData();
         this.bottomSheetFragment.show(getSupportFragmentManager(), this.bottomSheetFragment.getTag());
@@ -530,8 +530,8 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         if (this.bottomSheetFragment2 != null) {
             getSupportFragmentManager().beginTransaction().remove(this.bottomSheetFragment2).commitAllowingStateLoss();
         }
-        this.bottomSheetFragment2 = new QueueDialogSheet(this.soundFusion, this);
-        this.bottomSheetFragment2.setDismissListener((QueueDialogSheet.OnDismissListener));
+        this.bottomSheetFragment2 = new QueueSheet(this.hyperSound, this);
+        this.bottomSheetFragment2.setDismissListener((QueueSheet.OnDismissListener));
         updateMusicData();
         this.bottomSheetFragment2.show(getSupportFragmentManager(), this.bottomSheetFragment2.getTag());
     }
@@ -552,9 +552,9 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
 
         /* renamed from: lambda$onBottomSheetDismissed$0$com-xoeris-app-musify-activities-HomeActivity$12, reason: not valid java name */
         /* synthetic */ void m214x5349117b() {
-            if (HomeActivity.this.soundFusion != null && HomeActivity.this.soundFusion.getCurrentSong() != null) {
-                HomeActivity.this.songTitleTextView.setText(HomeActivity.this.soundFusion.getCurrentSong().getTitle());
-                HomeActivity.this.songArtistTextView.setText(HomeActivity.this.soundFusion.getCurrentSong().getArtist());
+            if (HomeActivity.this.hyperSound != null && HomeActivity.this.hyperSound.getCurrentSong() != null) {
+                HomeActivity.this.songTitleTextView.setText(HomeActivity.this.hyperSound.getCurrentSong().getTitle());
+                HomeActivity.this.songArtistTextView.setText(HomeActivity.this.hyperSound.getCurrentSong().getArtist());
                 HomeActivity.this.updateMusicData();
             }
             HomeActivity.this.bottomSheetFragment = null;
@@ -568,8 +568,8 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
 
     @Override // com.xoeris.system.core.module.media.ux.audio.SoundFusion.OnMusicPlayerListener
     public void onTaskRemoved(Intent rootIntent) {
-        if (this.soundFusion != null) {
-            this.soundFusion.release();
+        if (this.hyperSound != null) {
+            this.hyperSound.release();
         }
         if (this.notificationManager != null) {
             this.notificationManager.cancelNotification();
@@ -578,11 +578,11 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
             this.seekBarHandler.removeCallbacks(this.seekBarRunnable);
         }
         SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, 0).edit();
-        editor.putBoolean(KEY_SHUFFLE_STATE, this.soundFusion.isShuffleEnabled());
-        editor.putInt(KEY_REPEAT_MODE, this.soundFusion.getRepeatMode());
+        editor.putBoolean(KEY_SHUFFLE_STATE, this.hyperSound.isShuffleEnabled());
+        editor.putInt(KEY_REPEAT_MODE, this.hyperSound.getRepeatMode());
         editor.apply();
         this.notificationManager.cancelNotification();
-        stopService(new Intent(this, (Class<?>) SoundFusionService.class));
+        stopService(new Intent(this, (Class<?>) HyperSoundService.class));
     }
 
     private void setupSeekBarUpdater() {
@@ -590,9 +590,9 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         this.seekBarRunnable = new Runnable() {
             @Override
             public void run() {
-                if (HomeActivity.this.soundFusion != null && HomeActivity.this.soundFusion.isPlaying()) {
-                    int currentPosition = HomeActivity.this.soundFusion.getCurrentPosition();
-                    int duration = HomeActivity.this.soundFusion.getDuration();
+                if (HomeActivity.this.hyperSound != null && HomeActivity.this.hyperSound.isPlaying()) {
+                    int currentPosition = HomeActivity.this.hyperSound.getCurrentPosition();
+                    int duration = HomeActivity.this.hyperSound.getDuration();
                     HomeActivity.this.seekBar.setMax(duration);
                     HomeActivity.this.seekBar.setProgress(currentPosition);
                     HomeActivity.this.songCurrentDuration.setText(HomeActivity.this.formatTime(currentPosition));
@@ -602,7 +602,7 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
                     if (HomeActivity.this.notificationManager != null) {
                         HomeActivity.this.notificationManager.updateMediaSessionPlaybackState(
                                 currentPosition,
-                                HomeActivity.this.soundFusion.isPlaying()
+                                HomeActivity.this.hyperSound.isPlaying()
                         );
                     }
                 }
@@ -642,8 +642,8 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         if (this.seekBarHandler != null) {
             this.seekBarHandler.removeCallbacks(this.seekBarRunnable);
         }
-        if (this.soundFusion != null) {
-            this.soundFusion.setListener(null);
+        if (this.hyperSound != null) {
+            this.hyperSound.setListener(null);
             if (this.seekBarHandler != null) {
                 this.seekBarHandler.removeCallbacks(this.seekBarRunnable);
             }
@@ -654,20 +654,20 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
     protected void onDestroy() {
         super.onDestroy();
         SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, 0).edit();
-        editor.putBoolean(KEY_SHUFFLE_STATE, this.soundFusion.isShuffleEnabled());
-        editor.putInt(KEY_REPEAT_MODE, this.soundFusion.getRepeatMode());
+        editor.putBoolean(KEY_SHUFFLE_STATE, this.hyperSound.isShuffleEnabled());
+        editor.putInt(KEY_REPEAT_MODE, this.hyperSound.getRepeatMode());
         editor.apply();
         if (isFinishing()) {
             if (this.seekBarHandler != null) {
                 this.seekBarHandler.removeCallbacks(this.seekBarRunnable);
             }
-            if (this.soundFusion != null) {
-                this.soundFusion.release();
+            if (this.hyperSound != null) {
+                this.hyperSound.release();
             }
             if (this.notificationManager != null) {
                 this.notificationManager.cancelNotification();
             }
-            stopService(new Intent(this, (Class<?>) SoundFusionService.class));
+            stopService(new Intent(this, (Class<?>) HyperSoundService.class));
         }
     }
 
@@ -705,20 +705,20 @@ public class HomeActivity extends BaseActivity implements SoundFusion.OnMusicPla
         buttonExitConfirmExit.setOnClickListener(v -> {
             dialogConfirmExit.dismiss();
             SharedPreferences.Editor editor = getSharedPreferences(PREFS_NAME, 0).edit();
-            editor.putBoolean(KEY_SHUFFLE_STATE, this.soundFusion.isShuffleEnabled());
-            editor.putInt(KEY_REPEAT_MODE, this.soundFusion.getRepeatMode());
+            editor.putBoolean(KEY_SHUFFLE_STATE, this.hyperSound.isShuffleEnabled());
+            editor.putInt(KEY_REPEAT_MODE, this.hyperSound.getRepeatMode());
             editor.apply();
             if (isFinishing()) {
                 if (this.seekBarHandler != null) {
                     this.seekBarHandler.removeCallbacks(this.seekBarRunnable);
                 }
-                if (this.soundFusion != null) {
-                    this.soundFusion.release();
+                if (this.hyperSound != null) {
+                    this.hyperSound.release();
                 }
                 if (this.notificationManager != null) {
                     this.notificationManager.cancelNotification();
                 }
-                stopService(new Intent(this, (Class<?>) SoundFusionService.class));
+                stopService(new Intent(this, (Class<?>) HyperSoundService.class));
             }
             finishAffinity();
         });

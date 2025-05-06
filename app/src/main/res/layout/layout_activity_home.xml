@@ -42,8 +42,8 @@
                 android:src="@drawable/ic_album"
                 android:scaleType="centerCrop"
                 android:contentDescription="@string/album_art"
-                android:tint="@color/white"
-                android:clipToOutline="true"/>
+                android:clipToOutline="true"
+                app:tint="@color/white" />
 
             <ImageView
                 android:id="@+id/skip_previous_icon"

@@ -28,4 +28,10 @@
     <string name="exit_musify">Exit Musify?</string>
     <string name="exit_confirmation">Are you sure you want to exit Musify? You can exit to close and end all activity or run in background for music playback and notification background running.</string>
     <string name="search_music">Search music…</string>
+    <string name="musify_is_a_feature_rich_next_generation_music_player_crafted_for_music_lovers_who_crave_more_from_their_listening_experience_available_on_android_with_ios_and_windows_versions_coming_soon_musify_transforms_your_device_into_a_high_fidelity_audio_hub_putting_your_music_library_front_and_center_whether_you_re_a_casual_listener_a_passionate_audiophile_or_somewhere_in_between_musify_delivers_a_sleek_powerful_and_personalized_musical_journey">Musify is a feature-rich, next-generation music player crafted for music lovers who crave more from their listening experience. Available on Android (with iOS and Windows versions coming soon), Musify transforms your device into a high-fidelity audio hub — putting your music library front and center. Whether you\'re a casual listener, a passionate audiophile, or somewhere in between, Musify delivers a sleek, powerful, and personalized musical journey.</string>
+    <string name="a_next_generation_music_experience">A Next-Generation Music Experience</string>
+    <string name="musify_banner">Musify Banner</string>
+    <string name="musify_is_not_officially_release_some_features_may_still_be_under_development">Musify is not officially release. Some features may still be under development.</string>
+    <string name="smart_playlists_n_10_band_equalizer_presets_n_advanced_audio_effects_n_lyrics_metadata_n_offline_first_n_dark_mode_themes_n_notification_controls_n_crossfade_gapless_playback"><![CDATA[- Smart Playlists\n- 10-Band Equalizer & Presets\n- Advanced Audio Effects\n- Lyrics & Metadata\n- Offline-First\n- Dark Mode & Themes\n- Notification Controls\n- Crossfade & Gapless Playback]]></string>
+    <string name="core_features">Core Features</string>
 </resources>
