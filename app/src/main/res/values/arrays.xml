@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <array name="theme_options">
-        <item>Light Mode</item>
-        <item>Dark Mode</item>
-        <item>Follow System</item>
-    </array>
-</resources>
