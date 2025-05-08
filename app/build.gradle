@@ -8,16 +8,12 @@ android {
 
     defaultConfig {
         applicationId "com.xoeris.android.musify"
-        minSdk 24
+        minSdk 19
         targetSdk 36
         versionCode 1
-        versionName '1.0.3'
+        versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        versionNameSuffix 'release'
-        versionCode 1
-        signingConfig signingConfigs.debug
-        multiDexEnabled true
     }
 
     buildTypes {
@@ -30,24 +26,12 @@ android {
         sourceCompatibility JavaVersion.VERSION_11
         targetCompatibility JavaVersion.VERSION_11
     }
-    buildFeatures {
-        viewBinding true
-    }
-    dependenciesInfo {
-        includeInApk false
-        includeInBundle false
-    }
-    ndkVersion '27.0.12077973'
-    buildToolsVersion '34.0.0'
 }
 
 dependencies {
 
     implementation libs.appcompat
     implementation libs.material
-    implementation libs.constraintlayout.core
-    implementation libs.media
-    implementation libs.media.v160
     testImplementation libs.junit
     androidTestImplementation libs.ext.junit
     androidTestImplementation libs.espresso.core

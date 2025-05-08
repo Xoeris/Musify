@@ -2,9 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO"/>
-    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
-
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -13,45 +10,6 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Musify"
-        tools:targetApi="31" >
-
-        <activity
-            android:name=".app.activity.MainActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".app.activity.HomeActivity"
-            android:exported="true"
-            android:launchMode="singleTask"/>
-        <activity
-            android:name=".app.activity.DisplaySettingsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".app.activity.SoundSettingsActivity"
-            android:exported="true" />
-        <activity
-            android:name=".app.activity.AboutSettingsActivity"
-            android:exported="true" />
-        <receiver
-            android:name="com.xoeris.android.xesc.system.core.module.media.ui.receiver.NotificationReceiver"
-            android:enabled="true"
-            android:exported="false">
-            <intent-filter>
-                <action android:name="PREVIOUS_ACTION"/>
-                <action android:name="PLAY_PAUSE_ACTION"/>
-                <action android:name="NEXT_ACTION"/>
-            </intent-filter>
-        </receiver>
-        <service
-            android:name="com.xoeris.android.xesc.system.core.module.media.ux.audio.service.HyperSoundService"
-            android:enabled="true"
-            android:exported="false"/>
-
-    </application>
+        android:theme="@style/Theme.Musify" />
 
 </manifest>
