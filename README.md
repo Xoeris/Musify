@@ -59,7 +59,7 @@ Musify is a **desktop music player and audio workstation** with a companion **An
 - **Single Instance Guard:** Named system mutex preventing duplicate instances, passing folder imports to the running instance.
 
 ### Android companion app (Xoeris Musify for Android)
-Package `com.xoeris.android.app.musify` · minSdk 24 · targetSdk 36 · ABIs `armeabi-v7a`, `arm64-v8a`, `x86`, `x86_64`.
+Android companion app · minSdk 24 · targetSdk 36 · ABIs `armeabi-v7a`, `arm64-v8a`, `x86`, `x86_64`.
 - On-device music library browser, background audio playback service, and notification controls.
 - Volume boost up to 200% with normalization.
 - Interchangeable `.xmpx` playlist import and export.
