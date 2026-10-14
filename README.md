@@ -4,7 +4,7 @@
 
 Built on **XIME** (Xoeris Interactive Modular Ecosystem). Runs on **Windows, Linux and macOS**.
 
-> Status: `1.01.01` — active development. Closed source.
+> Version: `1.0.1`
 
 ---
 
